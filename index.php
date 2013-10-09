@@ -1,7 +1,3 @@
 <?php
-for($i = 0; $i < 10; $i++)
-{
-	echo("Lolboll")
-	
-}
+echo("Holla holla get a dolla")
 ?>
