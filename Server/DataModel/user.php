@@ -3,8 +3,8 @@ class user
 {
     public $name;
     public $email;
-    public $votes;
-    public $comments;
+    public $votes = array();
+    public $comments = array();
     public $source;
     public $id;
 }

@@ -5,5 +5,6 @@ class comment
     public $value;
     public $create_date;
     public $edit_date;
+    public $user;
 }
 ?>
