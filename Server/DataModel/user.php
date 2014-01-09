@@ -6,5 +6,6 @@ class user
     public $votes;
     public $comments;
     public $source;
+    public $id;
 }
 ?>
