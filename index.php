@@ -1,5 +1,5 @@
 <?php
     session_start();
-    include __DIR__ . '/Server/DataModel/Model.php';
-    $model = new Model;
+    include_once __DIR__ . '/Server/DataAccess/dataAccess.php';
+    $dataAccess = new DataAccess;
 ?>

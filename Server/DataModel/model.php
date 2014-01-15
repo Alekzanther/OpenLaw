@@ -1,23 +1,22 @@
 <?php 
 
-include 'config.php';
-include 'user.php';
-include 'article.php';
-include 'comment.php';
-include 'source.php';
-include 'tag.php';
-include 'vote.php';
+include_once  'config.php';
+include_once  'user.php';
+include_once  'article.php';
+include_once  'comment.php';
+include_once  'source.php';
+include_once  'tag.php';
+include_once  'vote.php';
 
 class model
 {   
     static $model = NULL;
-    static $articles = NULL;
-    static $comments = NULL;
-    static $sources = NULL;
-    static $tags = NULL;
-    static $users = NULL;
-    static $votes = NULL;
-
+    public static $articles = NULL;
+    public static $comments = NULL;
+    public static $sources = NULL;
+    public static $tags = NULL;
+    public static $users = NULL;
+    public static $votes = NULL;
     
     function __construct() {
         if(self::$model == NULL)
@@ -39,14 +38,17 @@ class model
         
         self::linkUserVotes();
         self::linkUserComments();
-        //var_dump(self::$tags);
-        var_dump(self::$users);
-        //var_dump(self::$sources);
-        //var_dump(self::$comments);
+        self::linkSourceTag();
+        self::linkCommentVote();
+        self::linkArticleVote();
+        self::linkArticleTag();
+        self::linkArticleComment();
+        self::linkArticleSource();
+        
         //var_dump(self::$articles);
-        //var_dump(self::$votes);
+        
         echo("Initializing\n");
-        self::$model = "KalleNOTNULLCHECK";
+        self::$model = "KalleNOT_NULL_CHECK";
     }
     
     private static function linkUserVotes()
@@ -91,6 +93,90 @@ class model
             
             self::$users[$userId]->source = self::$sources[$sourceId];
             self::$sources[$sourceId]->user = self::$users[$userId];
+        }
+    }
+    
+    private static function linkSourceTag()
+    {
+        $link = databaseConnection::getConnection();
+        $sql = 'SELECT * FROM `source_tag`';
+        $result = mysql_query($sql,$link);
+        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        {
+            $tagId = $row['tag_id'];
+            $sourceId = $row['source_id'];
+            self::$tags[$tagId]->sources[$sourceId] = self::$sources[$sourceId];
+            self::$sources[$sourceId]->tags[$tagId] = self::$tags[$tagId];
+        }
+    }
+    
+    private static function linkCommentVote()
+    {
+        $link = databaseConnection::getConnection();
+        $sql = 'SELECT * FROM `comment_vote`';
+        $result = mysql_query($sql,$link);
+        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        {
+            $commentId = $row['comment_id'];
+            $voteId = $row['vote_id'];
+            self::$comments[$commentId]->votes[$voteId] = self::$votes[$voteId];
+            self::$votes[$voteId]->comment = self::$comments[$commentId];
+        }
+    }
+    
+    private static function linkArticleVote()
+    {
+        $link = databaseConnection::getConnection();
+        $sql = 'SELECT * FROM `article_vote`';
+        $result = mysql_query($sql,$link);
+        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        {
+            $articleId = $row['article_id'];
+            $voteId = $row['vote_id'];
+            self::$articles[$articleId]->votes[$voteId] = self::$votes[$voteId];
+            self::$votes[$voteId]->article = self::$articles[$articleId];
+        }
+    }
+    
+    private static function linkArticleTag()
+    {
+        $link = databaseConnection::getConnection();
+        $sql = 'SELECT * FROM `article_tag`';
+        $result = mysql_query($sql,$link);
+        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        {
+            $articleId = $row['article_id'];
+            $tagId = $row['tag_id'];
+            self::$articles[$articleId]->tags[$tagId] = self::$tags[$tagId];
+            self::$tags[$tagId]->articles[$articleId] = self::$articles[$articleId];
+        }
+    }
+    
+    private static function linkArticleComment()
+    {
+        $link = databaseConnection::getConnection();
+        $sql = 'SELECT * FROM `article_comment`';
+        $result = mysql_query($sql,$link);
+        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        {
+            $articleId = $row['article_id'];
+            $commentId = $row['comment_id'];
+            self::$articles[$articleId]->comments[$commentId] = self::$comments[$commentId];
+            self::$comments[$commentId]->article = self::$articles[$articleId];
+        }
+    }
+
+    private static function linkArticleSource()
+    {
+        $link = databaseConnection::getConnection();
+        $sql = 'SELECT * FROM `article_source`';
+        $result = mysql_query($sql,$link);
+        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        {
+            $articleId = $row['article_id'];
+            $sourceId = $row['source_id'];
+            self::$articles[$articleId]->sources[$sourceId] = self::$sources[$sourceId];
+            self::$sources[$sourceId]->articles[$articleId] = self::$articles[$articleId];
         }
     }
     

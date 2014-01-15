@@ -6,5 +6,7 @@ class comment
     public $create_date;
     public $edit_date;
     public $user;
+    public $votes = array();
+    public $article;
 }
 ?>

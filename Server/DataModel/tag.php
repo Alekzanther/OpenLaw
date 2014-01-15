@@ -3,6 +3,7 @@ class tag
 {
     public $id;
     public $create_date;
-    public $name;   
+    public $name;
+    public $sources = array();
 }
 ?>

@@ -1,5 +1,6 @@
 <?php
-class user
+include_once 'jsonBase.php';
+class user extends jsonBase
 {
     public $name;
     public $email;
