@@ -10,48 +10,28 @@ class dataAccess
             $model = new model;
         }
         $a = self::getData();
+        #var_dump($a);
         self::setData($a);
     }
     
     function getData()
     {
-        $data = array();
-        $i = 0;
-        foreach (model::$users as $user) {
-            $json = $user->toJSON();
-            $data[$i] = $json;
-            $i++;
-        }
-        return $data;
+        return json_encode(model::$items);
     }
     
     public function setData($jsons)
     {
-        foreach ($jsons as $json)
+        $jsonData = json_decode($jsons,true);
+        #var_dump($jsonData);
+        $keys = array_keys($jsonData);
+        foreach($keys as $key)
         {
-            $obj = json_decode($json);
-            switch ($obj->type) {
-                case 'user':
-                    $this->JSONSetUser($obj);
-                    break;
-                case 'vote':
-                    $this->JSONSetVote($obj);
-                    break;
-                case 'comment':
-                    $this->JSONSetComment($obj);
-                    break;
-                case 'source':
-                    $this->JSONSetSource($obj);
-                    break;
-                case 'article':
-                    $this->JSONSetArticle($obj);
-                    break;
-                case 'tag':
-                    $this->JSONSetTag($obj);
-                    break;
-                default:
-                    throw new Exception("setData: Unknown JSON type");    
-                    break;
+            foreach ($jsonData[$key] as $jsonType)
+            {
+                $id = $jsonType["id"];
+                
+                $realItem = model::$items[$key][$id];
+                $this->mergeData($jsonType, $realItem);
             }
         }
         //$user->fromJSON($json);
@@ -112,48 +92,16 @@ class dataAccess
         $instanceReflect = new ReflectionClass($modelObj);
         $instanceProps = $instanceReflect->getProperties();
 
-        foreach(get_object_vars($jsonObj) as $propName => $newValue) 
+        $keys = array_keys($jsonObj);
+        foreach($keys as $key)
         {
-            if(self::endsWith($propName,"id"))
+            $value = $jsonObj[$key];
+            $prop = $instanceReflect->getProperty($key);
+            if($prop->getValue($modelObj) != $value)
             {
-                /*Do this somewhere else*/
+                echo $prop->getValue($modelObj);
                 
-                /*$trans = array("id" => "");
-                $propName = strtr($propName, $trans);*/
-            }
-            else if(self::endsWith($propName,"ids"))
-            {
-                $transformationString = array("ids" => "");
-                $propName = strtr($propName, $transformationString);
-                
-                foreach($newValue as $value)
-                {
-                    $prop = $instanceReflect->getProperty($propName);
-                    $items = $prop->getValue($modelObj);
-                    #$items[$value] = model::
-                    var_dump($items);
-                }
-                
-                $prop = $instanceReflect->getProperty($propName);
-                $items = $prop->getValue($modelObj);
-                foreach($items as $item)
-                {
-                    
-                }
-                //var_dump($temp);
-                //$prop->setValue();
-            }
-            else if($propName == "type")
-            {
-                
-            }
-            else 
-            {
-                $prop = $instanceReflect->getProperty($propName);
-                if($prop->getValue($modelObj) != $newValue)
-                {
-                    $this->changeValue($prop, $modelObj, $newValue);
-                }
+                $this->changeValue($prop, $modelObj, $value);
             }
         }
     }

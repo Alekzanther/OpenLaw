@@ -5,8 +5,8 @@ class comment
     public $value;
     public $create_date;
     public $edit_date;
-    public $user;
-    public $votes = array();
-    public $article;
+    public $userId;
+    public $voteIds = array();
+    public $articleId;
 }
 ?>

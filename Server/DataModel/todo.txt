@@ -1,0 +1,11 @@
+Man måste kolla så att id:t finns i arrayen innan man kopplar något med den platsen. Annars skapas en stdClass upp
+tex
+
+if(self::$items["tag"][$tagId] != null)
+{
+	self::$items["tag"][$tagId]->sourceIds[] = $sourceId;
+}
+else
+{
+	NÅGOT ÄR FEL
+}

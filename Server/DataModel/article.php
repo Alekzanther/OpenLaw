@@ -3,8 +3,8 @@ class article
 {
     public $id;
     public $create_date;
-    public $votes = array();
-    public $sources = array();
-    public $comments = array();
+    public $voteIds = array();
+    public $sourceIds = array();
+    public $commentIds = array();
 }
 ?>

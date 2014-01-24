@@ -4,6 +4,6 @@ class tag
     public $id;
     public $create_date;
     public $name;
-    public $sources = array();
+    public $sourceIds = array();
 }
 ?>

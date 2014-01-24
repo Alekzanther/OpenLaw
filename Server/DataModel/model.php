@@ -11,12 +11,7 @@ include_once  'vote.php';
 class model
 {   
     static $model = NULL;
-    public static $articles = NULL;
-    public static $comments = NULL;
-    public static $sources = NULL;
-    public static $tags = NULL;
-    public static $users = NULL;
-    public static $votes = NULL;
+    public static $items = NULL;
     
     function __construct() {
         if(self::$model == NULL)
@@ -29,12 +24,10 @@ class model
     
     private static function initializeModel()
     {
-        self::$users = self::getUsers();
-        self::$votes = self::getVotes();
-        self::$articles = self::getArticles();
-        self::$comments = self::getComments();
-        self::$sources = self::getSources();
-        self::$tags = self::getTags();
+        
+        $size = memory_get_usage();
+        
+        self::getItems();
         
         self::linkUserVotes();
         self::linkUserComments();
@@ -44,8 +37,25 @@ class model
         self::linkArticleTag();
         self::linkArticleComment();
         self::linkArticleSource();
+        #var_dump(self::$items);
         
-        //var_dump(self::$articles);
+        ##Error checking the model
+        #foreach(self::$items as $item)
+        #{
+        #    foreach($item as $realItem)
+        #    {
+        #        #var_dump($realItem);
+        #        if($realItem->id == null)
+        #        {
+                     #error
+        #            #var_dump($realItem);
+        #        }
+        #    }
+        #}
+        $size2 = memory_get_usage();
+        $sizeKb = ($size2 - $size) / 1024;
+        var_dump("model size = ".$sizeKb . "kB");
+        
         
         echo("Initializing\n");
         self::$model = "KalleNOT_NULL_CHECK";
@@ -61,8 +71,8 @@ class model
             $userId = $row['user_id'];
             $voteId = $row['vote_id'];
             
-            self::$users[$userId]->votes[$voteId] = self::$votes[$voteId];
-            self::$votes[$voteId]->user = self::$users[$userId];
+            self::$items["user"][$userId]->voteIds[] = $voteId;
+            self::$items["vote"][$voteId]->userId = $userId;
         }
     }
     
@@ -76,8 +86,8 @@ class model
             $userId = $row['user_id'];
             $commentId = $row['comment_id'];
             
-            self::$users[$userId]->comments[$commentId] = self::$comments[$commentId];
-            self::$comments[$commentId]->user = self::$users[$userId];
+            self::$items["user"][$userId]->commentIds[] = $commentId;
+            self::$items["comment"][$commentId]->userId = $userId;
         }
     }
     
@@ -91,8 +101,8 @@ class model
             $userId = $row['user_id'];
             $sourceId = $row['source_id'];
             
-            self::$users[$userId]->source = self::$sources[$sourceId];
-            self::$sources[$sourceId]->user = self::$users[$userId];
+            self::$items["user"][$userId]->$sourceId = $sourceId;
+            self::$items["source"][$sourceId]->userId = $userId;
         }
     }
     
@@ -105,8 +115,9 @@ class model
         {
             $tagId = $row['tag_id'];
             $sourceId = $row['source_id'];
-            self::$tags[$tagId]->sources[$sourceId] = self::$sources[$sourceId];
-            self::$sources[$sourceId]->tags[$tagId] = self::$tags[$tagId];
+            
+            self::$items["tag"][$tagId]->sourceIds[] = $sourceId;
+            self::$items["source"][$sourceId]->tagIds[] = $tagId;
         }
     }
     
@@ -119,8 +130,9 @@ class model
         {
             $commentId = $row['comment_id'];
             $voteId = $row['vote_id'];
-            self::$comments[$commentId]->votes[$voteId] = self::$votes[$voteId];
-            self::$votes[$voteId]->comment = self::$comments[$commentId];
+            
+            self::$items["comment"][$commentId]->voteIds[] = $voteId;
+            self::$items["vote"][$voteId]->commentId = $commentId;
         }
     }
     
@@ -133,8 +145,10 @@ class model
         {
             $articleId = $row['article_id'];
             $voteId = $row['vote_id'];
-            self::$articles[$articleId]->votes[$voteId] = self::$votes[$voteId];
-            self::$votes[$voteId]->article = self::$articles[$articleId];
+            
+            self::$items["article"][$articleId]->voteIds[] = $voteId;
+            self::$items["vote"][$voteId]->articleId = $articleId;
+            
         }
     }
     
@@ -147,8 +161,10 @@ class model
         {
             $articleId = $row['article_id'];
             $tagId = $row['tag_id'];
-            self::$articles[$articleId]->tags[$tagId] = self::$tags[$tagId];
-            self::$tags[$tagId]->articles[$articleId] = self::$articles[$articleId];
+            
+            self::$items["article"][$articleId]->tagIds[] = $tagId;
+            self::$items["tag"][$tagId]->articleIds[] = $articleId;
+            
         }
     }
     
@@ -161,8 +177,9 @@ class model
         {
             $articleId = $row['article_id'];
             $commentId = $row['comment_id'];
-            self::$articles[$articleId]->comments[$commentId] = self::$comments[$commentId];
-            self::$comments[$commentId]->article = self::$articles[$articleId];
+            
+            self::$items["article"][$articleId]->commentIds[] = $commentId;
+            self::$items["comment"][$commentId]->articleId = $articleId;
         }
     }
 
@@ -175,10 +192,21 @@ class model
         {
             $articleId = $row['article_id'];
             $sourceId = $row['source_id'];
-            self::$articles[$articleId]->sources[$sourceId] = self::$sources[$sourceId];
-            self::$sources[$sourceId]->articles[$articleId] = self::$articles[$articleId];
+            
+            self::$items["article"][$articleId]->sourceIds[] = $sourceId;
+            self::$items["source"][$sourceId]->articleIds[] = $articleId;
         }
     }
+    
+    private static function getItems()
+    {
+        self::$items["user"] = self::getUsers();
+        self::$items["comment"] = self::getComments();
+        self::$items["vote"] = self::getVotes();
+        self::$items["tag"] = self::getTags();
+        self::$items["article"] = self::getArticles();
+        self::$items["source"] = self::getSources();
+     }
     
     private static function getUsers()
     {
@@ -233,7 +261,7 @@ class model
             $dbItem = new article;
             $dbItem->id = $row['id'];
             $dbItem->create_date = $row['create_date'];
-            $dbItems[$dbItem->id ] = $dbItem;
+            $dbItems[$dbItem->id] = $dbItem;
             $i++;
         }
         return $dbItems;
@@ -253,7 +281,7 @@ class model
             $dbItem->id = $row['id'];
             $dbItem->create_date = $row['create_date'];
             $dbItem->name = $row['name'];
-            $dbItems[$dbItem->id ] = $dbItem;
+            $dbItems[$dbItem->id] = $dbItem;
             $i++;
         }
         return $dbItems;
@@ -273,7 +301,7 @@ class model
             $dbItem->id = $row['id'];
             $dbItem->create_date = $row['create_date'];
             $dbItem->name = $row['name'];
-            $dbItems[$dbItem->id ] = $dbItem;
+            $dbItems[$dbItem->id] = $dbItem;
             $i++;
         }
         return $dbItems;
@@ -293,7 +321,7 @@ class model
             $dbItem->id = $row['id'];
             $dbItem->create_date = $row['create_date'];
             $dbItem->value = $row['value'];
-            $dbItems[$dbItem->id ] = $dbItem;
+            $dbItems[$dbItem->id] = $dbItem;
             $i++;
         }
         return $dbItems;

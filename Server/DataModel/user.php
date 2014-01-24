@@ -1,12 +1,11 @@
 <?php
-include_once 'jsonBase.php';
-class user extends jsonBase
+class user 
 {
+    public $id;
     public $name;
     public $email;
-    public $votes = array();
-    public $comments = array();
-    public $source;
-    public $id;
+    public $voteIds = array();
+    public $commentIds = array();
+    public $sourceId;
 }
 ?>
