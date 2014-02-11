@@ -65,8 +65,8 @@ class model
     {
         $link = databaseConnection::getConnection();   
         $sql = 'SELECT * FROM `user_vote`';
-        $result = mysql_query($sql,$link);
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        $result = $link->query($sql);
+        while ($row = $result->fetch_array()) 
         {
             $userId = $row['user_id'];
             $voteId = $row['vote_id'];
@@ -80,8 +80,8 @@ class model
     {
         $link = databaseConnection::getConnection();   
         $sql = 'SELECT * FROM `user_comment`';
-        $result = mysql_query($sql,$link);
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        $result = $link->query($sql);
+        while ($row = $result->fetch_array()) 
         {
             $userId = $row['user_id'];
             $commentId = $row['comment_id'];
@@ -95,8 +95,8 @@ class model
     {
         $link = databaseConnection::getConnection();   
         $sql = 'SELECT * FROM `user_comment`';
-        $result = mysql_query($sql,$link);
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        $result = $link->query($sql);
+        while ($row = $result->fetch_array()) 
         {
             $userId = $row['user_id'];
             $sourceId = $row['source_id'];
@@ -110,8 +110,8 @@ class model
     {
         $link = databaseConnection::getConnection();
         $sql = 'SELECT * FROM `source_tag`';
-        $result = mysql_query($sql,$link);
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        $result = $link->query($sql);
+        while ($row = $result->fetch_array()) 
         {
             $tagId = $row['tag_id'];
             $sourceId = $row['source_id'];
@@ -125,8 +125,8 @@ class model
     {
         $link = databaseConnection::getConnection();
         $sql = 'SELECT * FROM `comment_vote`';
-        $result = mysql_query($sql,$link);
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        $result = $link->query($sql);
+        while ($row = $result->fetch_array())  
         {
             $commentId = $row['comment_id'];
             $voteId = $row['vote_id'];
@@ -140,8 +140,8 @@ class model
     {
         $link = databaseConnection::getConnection();
         $sql = 'SELECT * FROM `article_vote`';
-        $result = mysql_query($sql,$link);
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        $result = $link->query($sql);
+        while ($row = $result->fetch_array()) 
         {
             $articleId = $row['article_id'];
             $voteId = $row['vote_id'];
@@ -156,8 +156,8 @@ class model
     {
         $link = databaseConnection::getConnection();
         $sql = 'SELECT * FROM `article_tag`';
-        $result = mysql_query($sql,$link);
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        $result = $link->query($sql);
+        while ($row = $result->fetch_array()) 
         {
             $articleId = $row['article_id'];
             $tagId = $row['tag_id'];
@@ -172,8 +172,8 @@ class model
     {
         $link = databaseConnection::getConnection();
         $sql = 'SELECT * FROM `article_comment`';
-        $result = mysql_query($sql,$link);
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        $result = $link->query($sql);
+        while ($row = $result->fetch_array()) 
         {
             $articleId = $row['article_id'];
             $commentId = $row['comment_id'];
@@ -187,8 +187,8 @@ class model
     {
         $link = databaseConnection::getConnection();
         $sql = 'SELECT * FROM `article_source`';
-        $result = mysql_query($sql,$link);
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        $result = $link->query($sql);
+        while ($row = $result->fetch_array()) 
         {
             $articleId = $row['article_id'];
             $sourceId = $row['source_id'];
@@ -213,9 +213,9 @@ class model
         $link = databaseConnection::getConnection();   
         $dbItems = array();
         $sql = 'SELECT * FROM `user`';
-        $result = mysql_query($sql,$link);
+        $result = $link->query($sql);
         $i = 0;
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        while ($row = $result->fetch_array()) 
         {
             $dbItem = new user;
             $dbItem->name = $row['name'];
@@ -233,13 +233,13 @@ class model
         $link = databaseConnection::getConnection();   
         $dbItems = array();
         $sql = 'SELECT * FROM `comment`';
-        $result = mysql_query($sql,$link);
+        $result = $link->query($sql);
         $i = 0;
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        while ($row = $result->fetch_array()) 
         {
             $dbItem = new comment;
             $dbItem->id = $row['id'];
-            $dbItem->value = $row['value'];
+            $dbItem->value = utf8_encode($row['value']);
             $dbItem->create_date = $row['create_date'];
             $dbItem->edit_date = $row['edit_date'];
             $dbItems[$dbItem->id] = $dbItem;
@@ -254,9 +254,9 @@ class model
         $link = databaseConnection::getConnection();   
         $dbItems = array();
         $sql = 'SELECT * FROM `article`';
-        $result = mysql_query($sql,$link);
+        $result = $link->query($sql);
         $i = 0;
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        while ($row = $result->fetch_array()) 
         {
             $dbItem = new article;
             $dbItem->id = $row['id'];
@@ -273,14 +273,14 @@ class model
         $link = databaseConnection::getConnection();   
         $dbItems = array();
         $sql = 'SELECT * FROM `source`';
-        $result = mysql_query($sql,$link);
+        $result = $link->query($sql);
         $i = 0;
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        while ($row = $result->fetch_array())  
         {
             $dbItem = new source;
             $dbItem->id = $row['id'];
             $dbItem->create_date = $row['create_date'];
-            $dbItem->name = $row['name'];
+            $dbItem->name = utf8_encode($row['name']);
             $dbItems[$dbItem->id] = $dbItem;
             $i++;
         }
@@ -293,9 +293,9 @@ class model
         $link = databaseConnection::getConnection();   
         $dbItems = array();
         $sql = 'SELECT * FROM `tag`';
-        $result = mysql_query($sql,$link);
+        $result = $link->query($sql);
         $i = 0;
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        while ($row = $result->fetch_array()) 
         {
             $dbItem = new tag;
             $dbItem->id = $row['id'];
@@ -313,9 +313,9 @@ class model
         $link = databaseConnection::getConnection();   
         $dbItems = array();
         $sql = 'SELECT * FROM `vote`';
-        $result = mysql_query($sql,$link);
+        $result = $link->query($sql);
         $i = 0;
-        while ($row = mysql_fetch_array($result, MYSQL_BOTH)) 
+        while ($row = $result->fetch_array()) 
         {
             $dbItem = new vote;
             $dbItem->id = $row['id'];

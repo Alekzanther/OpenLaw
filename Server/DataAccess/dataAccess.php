@@ -91,7 +91,7 @@ class dataAccess
         
         $instanceReflect = new ReflectionClass($modelObj);
         $instanceProps = $instanceReflect->getProperties();
-
+        
         $keys = array_keys($jsonObj);
         foreach($keys as $key)
         {
@@ -99,8 +99,6 @@ class dataAccess
             $prop = $instanceReflect->getProperty($key);
             if($prop->getValue($modelObj) != $value)
             {
-                echo $prop->getValue($modelObj);
-                
                 $this->changeValue($prop, $modelObj, $value);
             }
         }
