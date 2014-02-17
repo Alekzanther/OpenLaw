@@ -16,7 +16,7 @@ class model
     function __construct() {
         if(self::$model == NULL)
         {
-            echo("First time model request\n");
+            //echo("First time model request\n");
             $this->InitializeModel();       
         }
         return self::$model;
@@ -28,6 +28,24 @@ class model
         $size = memory_get_usage();
         
         self::getItems();
+
+        $size2 = memory_get_usage();
+        $sizeKb = ($size2 - $size) / 1024;
+        //var_dump("model size = ".$sizeKb . "kB");
+        
+        //echo("Initializing\n");
+        self::$model = "KalleNOT_NULL_CHECK";
+    }
+    
+    
+    private static function getItems()
+    {
+        self::$items["user"] = self::getUsers();
+        self::$items["comment"] = self::getComments();
+        self::$items["vote"] = self::getVotes();
+        self::$items["tag"] = self::getTags();
+        self::$items["article"] = self::getArticles();
+        self::$items["source"] = self::getSources();
         
         self::linkUserVotes();
         self::linkUserComments();
@@ -37,30 +55,8 @@ class model
         self::linkArticleTag();
         self::linkArticleComment();
         self::linkArticleSource();
-        #var_dump(self::$items);
-        
-        ##Error checking the model
-        #foreach(self::$items as $item)
-        #{
-        #    foreach($item as $realItem)
-        #    {
-        #        #var_dump($realItem);
-        #        if($realItem->id == null)
-        #        {
-                     #error
-        #            #var_dump($realItem);
-        #        }
-        #    }
-        #}
-        $size2 = memory_get_usage();
-        $sizeKb = ($size2 - $size) / 1024;
-        var_dump("model size = ".$sizeKb . "kB");
-        
-        
-        echo("Initializing\n");
-        self::$model = "KalleNOT_NULL_CHECK";
-    }
-    
+     }
+ 
     private static function linkUserVotes()
     {
         $link = databaseConnection::getConnection();   
@@ -197,17 +193,7 @@ class model
             self::$items["source"][$sourceId]->articleIds[] = $articleId;
         }
     }
-    
-    private static function getItems()
-    {
-        self::$items["user"] = self::getUsers();
-        self::$items["comment"] = self::getComments();
-        self::$items["vote"] = self::getVotes();
-        self::$items["tag"] = self::getTags();
-        self::$items["article"] = self::getArticles();
-        self::$items["source"] = self::getSources();
-     }
-    
+
     private static function getUsers()
     {
         $link = databaseConnection::getConnection();   
@@ -239,7 +225,7 @@ class model
         {
             $dbItem = new comment;
             $dbItem->id = $row['id'];
-            $dbItem->value = utf8_encode($row['value']);
+            $dbItem->value = $row['value'];
             $dbItem->create_date = $row['create_date'];
             $dbItem->edit_date = $row['edit_date'];
             $dbItems[$dbItem->id] = $dbItem;
@@ -280,7 +266,7 @@ class model
             $dbItem = new source;
             $dbItem->id = $row['id'];
             $dbItem->create_date = $row['create_date'];
-            $dbItem->name = utf8_encode($row['name']);
+            $dbItem->name = $row['name'];
             $dbItems[$dbItem->id] = $dbItem;
             $i++;
         }

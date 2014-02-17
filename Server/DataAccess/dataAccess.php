@@ -1,5 +1,5 @@
 <?php
-include_once ('Server/DataModel/model.php');
+include_once $_SERVER['DOCUMENT_ROOT'] . '/OpenLaw/Server/DataModel/model.php';
 
 class dataAccess
 {
@@ -13,6 +13,8 @@ class dataAccess
         #var_dump($a);
         self::setData($a);
     }
+    
+    
     
     function getData()
     {
@@ -115,4 +117,13 @@ class dataAccess
     }
     
 }
+
+if (isset($_GET['url']) && method_exists('dataAccess',$_GET['url'])){
+  $view = new dataAccess();
+  echo($view->$_GET['url']());
+} 
+else {
+  echo 'nice try';
+}
+
 ?>

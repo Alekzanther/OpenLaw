@@ -9,3 +9,8 @@ else
 {
 	NÅGOT ÄR FEL
 }
+
+
+
+
+Singelton dataaccess?
