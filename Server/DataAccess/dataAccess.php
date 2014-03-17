@@ -3,27 +3,33 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/OpenLaw/Server/DataModel/model.php';
 
 class dataAccess
 {
-    static $model;
-    function __construct() {
-        if (self::$model == NULL)
-        {
-            $model = new model;
+    private static $singleton_instance = null;
+     
+    private function construct__() {
+        // Declaring the constructor as private ensures
+        // that this object is not created as a new intance
+        // outside of this class.  Therefore you must use the
+        // global_instance function to create this object.
+    }
+     
+    public static function global_instance() {
+        static $singleton_instance = null;
+        if($singleton_instance === null) {
+            $singleton_instance = new dataAccess();
         }
-        $a = self::getData();
-        #var_dump($a);
-        self::setData($a);
+         
+        return($singleton_instance);
     }
     
     
-    
-    function getData()
+    function getData($param)
     {
-        return json_encode(model::$items);
+        return json_encode(model::global_instance()->items);
     }
     
-    public function setData($jsons)
+    public function setData($type ,$json)
     {
-        $jsonData = json_decode($jsons,true);
+        $jsonData = json_decode($json,true);
         #var_dump($jsonData);
         $keys = array_keys($jsonData);
         foreach($keys as $key)
@@ -32,7 +38,7 @@ class dataAccess
             {
                 $id = $jsonType["id"];
                 
-                $realItem = model::$items[$key][$id];
+                $realItem = model::global_instance()->$items[$key][$id];
                 $this->mergeData($jsonType, $realItem);
             }
         }
@@ -52,10 +58,10 @@ class dataAccess
     function JSONSetUser($obj)
     {
         
-        if(array_key_exists($obj->id, model::$users))
+        if(array_key_exists($obj->id, model::global_instance()->$users))
         {
             
-            $existingItem = model::$users[$obj->id ];
+            $existingItem = model::global_instance()->$users[$obj->id ];
             $this->mergeData($obj, $existingItem);
         }
         else {
@@ -117,13 +123,4 @@ class dataAccess
     }
     
 }
-
-if (isset($_GET['url']) && method_exists('dataAccess',$_GET['url'])){
-  $view = new dataAccess();
-  echo($view->$_GET['url']());
-} 
-else {
-  echo 'nice try';
-}
-
 ?>

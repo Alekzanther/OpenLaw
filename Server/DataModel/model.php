@@ -9,55 +9,59 @@ include_once  'tag.php';
 include_once  'vote.php';
 
 class model
-{   
-    static $model = NULL;
-    public static $items = NULL;
+{
+    public $items = array();
     
-    function __construct() {
-        if(self::$model == NULL)
-        {
-            //echo("First time model request\n");
-            $this->InitializeModel();       
+    private static $singleton_instance = null;
+     
+    private function construct__() {
+    }
+     
+    public static function global_instance() {
+        static $singleton_instance = null;
+        if($singleton_instance === null) {
+            $singleton_instance = new model();
+            $singleton_instance->initializeModel();
         }
-        return self::$model;
+        return($singleton_instance);
     }
     
-    private static function initializeModel()
+    
+    public function initializeModel()
     {
-        
         $size = memory_get_usage();
         
-        self::getItems();
+        $this->getItems();
 
         $size2 = memory_get_usage();
         $sizeKb = ($size2 - $size) / 1024;
         //var_dump("model size = ".$sizeKb . "kB");
         
         //echo("Initializing\n");
-        self::$model = "KalleNOT_NULL_CHECK";
+        
     }
     
     
-    private static function getItems()
+    private function getItems()
     {
-        self::$items["user"] = self::getUsers();
-        self::$items["comment"] = self::getComments();
-        self::$items["vote"] = self::getVotes();
-        self::$items["tag"] = self::getTags();
-        self::$items["article"] = self::getArticles();
-        self::$items["source"] = self::getSources();
+        $this->items["user"] = $this->getUsers();
+        $this->items["comment"] = $this->getComments();
+        $this->items["vote"] = $this->getVotes();
+        $this->items["tag"] = $this->getTags();
+        $this->items["article"] = $this->getArticles();
+        $this->items["source"] = $this->getSources();
         
-        self::linkUserVotes();
-        self::linkUserComments();
-        self::linkSourceTag();
-        self::linkCommentVote();
-        self::linkArticleVote();
-        self::linkArticleTag();
-        self::linkArticleComment();
-        self::linkArticleSource();
+        $this->linkUserVotes();
+        $this->linkUserComments();
+        $this->linkSourceTag();
+        $this->linkCommentVote();
+        $this->linkArticleVote();
+        $this->linkArticleTag();
+        $this->linkArticleComment();
+        $this->linkArticleSource();
      }
  
-    private static function linkUserVotes()
+    private function linkUserVotes()
     {
         $link = databaseConnection::getConnection();   
         $sql = 'SELECT * FROM `user_vote`';
@@ -67,12 +71,12 @@ class model
             $userId = $row['user_id'];
             $voteId = $row['vote_id'];
             
-            self::$items["user"][$userId]->voteIds[] = $voteId;
-            self::$items["vote"][$voteId]->userId = $userId;
+            $this->items["user"][$userId]->voteIds[] = $voteId;
+            $this->items["vote"][$voteId]->userId = $userId;
         }
     }
     
-    private static function linkUserComments()
+    private function linkUserComments()
     {
         $link = databaseConnection::getConnection();   
         $sql = 'SELECT * FROM `user_comment`';
@@ -82,12 +86,12 @@ class model
             $userId = $row['user_id'];
             $commentId = $row['comment_id'];
             
-            self::$items["user"][$userId]->commentIds[] = $commentId;
-            self::$items["comment"][$commentId]->userId = $userId;
+            $this->items["user"][$userId]->commentIds[] = $commentId;
+            $this->items["comment"][$commentId]->userId = $userId;
         }
     }
     
-    private static function linkUserSource()
+    private function linkUserSource()
     {
         $link = databaseConnection::getConnection();   
         $sql = 'SELECT * FROM `user_comment`';
@@ -97,12 +101,12 @@ class model
             $userId = $row['user_id'];
             $sourceId = $row['source_id'];
             
-            self::$items["user"][$userId]->$sourceId = $sourceId;
-            self::$items["source"][$sourceId]->userId = $userId;
+            $this->items["user"][$userId]->$sourceId = $sourceId;
+            $this->items["source"][$sourceId]->userId = $userId;
         }
     }
     
-    private static function linkSourceTag()
+    private function linkSourceTag()
     {
         $link = databaseConnection::getConnection();
         $sql = 'SELECT * FROM `source_tag`';
@@ -112,12 +116,12 @@ class model
             $tagId = $row['tag_id'];
             $sourceId = $row['source_id'];
             
-            self::$items["tag"][$tagId]->sourceIds[] = $sourceId;
-            self::$items["source"][$sourceId]->tagIds[] = $tagId;
+            $this->items["tag"][$tagId]->sourceIds[] = $sourceId;
+            $this->items["source"][$sourceId]->tagIds[] = $tagId;
         }
     }
     
-    private static function linkCommentVote()
+    private function linkCommentVote()
     {
         $link = databaseConnection::getConnection();
         $sql = 'SELECT * FROM `comment_vote`';
@@ -127,12 +131,12 @@ class model
             $commentId = $row['comment_id'];
             $voteId = $row['vote_id'];
             
-            self::$items["comment"][$commentId]->voteIds[] = $voteId;
-            self::$items["vote"][$voteId]->commentId = $commentId;
+            $this->items["comment"][$commentId]->voteIds[] = $voteId;
+            $this->items["vote"][$voteId]->commentId = $commentId;
         }
     }
     
-    private static function linkArticleVote()
+    private function linkArticleVote()
     {
         $link = databaseConnection::getConnection();
         $sql = 'SELECT * FROM `article_vote`';
@@ -142,13 +146,13 @@ class model
             $articleId = $row['article_id'];
             $voteId = $row['vote_id'];
             
-            self::$items["article"][$articleId]->voteIds[] = $voteId;
-            self::$items["vote"][$voteId]->articleId = $articleId;
+            $this->items["article"][$articleId]->voteIds[] = $voteId;
+            $this->items["vote"][$voteId]->articleId = $articleId;
             
         }
     }
     
-    private static function linkArticleTag()
+    private function linkArticleTag()
     {
         $link = databaseConnection::getConnection();
         $sql = 'SELECT * FROM `article_tag`';
@@ -158,13 +162,13 @@ class model
             $articleId = $row['article_id'];
             $tagId = $row['tag_id'];
             
-            self::$items["article"][$articleId]->tagIds[] = $tagId;
-            self::$items["tag"][$tagId]->articleIds[] = $articleId;
+            $this->items["article"][$articleId]->tagIds[] = $tagId;
+            $this->items["tag"][$tagId]->articleIds[] = $articleId;
             
         }
     }
     
-    private static function linkArticleComment()
+    private function linkArticleComment()
     {
         $link = databaseConnection::getConnection();
         $sql = 'SELECT * FROM `article_comment`';
@@ -174,12 +178,12 @@ class model
             $articleId = $row['article_id'];
             $commentId = $row['comment_id'];
             
-            self::$items["article"][$articleId]->commentIds[] = $commentId;
-            self::$items["comment"][$commentId]->articleId = $articleId;
+            $this->items["article"][$articleId]->commentIds[] = $commentId;
+            $this->items["comment"][$commentId]->articleId = $articleId;
         }
     }
 
-    private static function linkArticleSource()
+    private function linkArticleSource()
     {
         $link = databaseConnection::getConnection();
         $sql = 'SELECT * FROM `article_source`';
@@ -189,12 +193,12 @@ class model
             $articleId = $row['article_id'];
             $sourceId = $row['source_id'];
             
-            self::$items["article"][$articleId]->sourceIds[] = $sourceId;
-            self::$items["source"][$sourceId]->articleIds[] = $articleId;
+            $this->items["article"][$articleId]->sourceIds[] = $sourceId;
+            $this->items["source"][$sourceId]->articleIds[] = $articleId;
         }
     }
 
-    private static function getUsers()
+    private function getUsers()
     {
         $link = databaseConnection::getConnection();   
         $dbItems = array();
@@ -214,7 +218,7 @@ class model
         
     }
     
-    private static function getComments()
+    private function getComments()
     {
         $link = databaseConnection::getConnection();   
         $dbItems = array();
@@ -235,7 +239,7 @@ class model
         
     }
     
-    private static function getArticles()
+    private function getArticles()
     {
         $link = databaseConnection::getConnection();   
         $dbItems = array();
@@ -254,7 +258,7 @@ class model
         
     }
     
-    private static function getSources()
+    private function getSources()
     {
         $link = databaseConnection::getConnection();   
         $dbItems = array();
@@ -274,7 +278,7 @@ class model
         
     }
 
-    private static function getTags()
+    private function getTags()
     {
         $link = databaseConnection::getConnection();   
         $dbItems = array();
@@ -294,7 +298,7 @@ class model
         
     }
     
-    private static function getVotes()
+    private function getVotes()
     {
         $link = databaseConnection::getConnection();   
         $dbItems = array();
