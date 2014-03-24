@@ -2,10 +2,10 @@
 
 /* Controllers */
 
-angular.module('myApp.controllers', []).
-  controller('MyCtrl1', [function() {
+angular.module('openLaw.controllers', []).controller('home', [function($scope) {
 
   }])
-  .controller('MyCtrl2', [function() {
-
+  .controller('login', [function($scope) {
+  		
+		
   }]);
