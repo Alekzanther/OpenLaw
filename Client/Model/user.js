@@ -25,5 +25,11 @@ var User = (function () {
         this.source = source;
         this.votes = votes;
     }
+    
+    User.prototype.save = function()
+    {
+    	window.ModelInstance.save(this);
+    };
+    
     return User;
 })();

@@ -1,1 +1,10 @@
-<p>This is the partial for view main.</p>
+<header ng-repeat-start="item in Model.users">
+
+  </header>
+	  <div class="body">
+	  	<input type="text" ng-model="item.name"/>
+	  	<input type="button" ng-click="item.save()"/>
+	  </div>
+<div ng-repeat-end>
+----------------------|
+</div>

@@ -1,3 +1,5 @@
+
+
 var Model = (function () {
     function Model() {
     	Model.prototype.generateData();   
@@ -22,10 +24,19 @@ var Model = (function () {
 	    {
 	    	Model.users.push(new User("user " + i,i + "@test.com",null,null,null,i));
 	    	Model.articles.push(new Article(i,new Date(),null,null,null));
-	    	Model.comments.push(new Comment(i,new Date(), "Komment " + i , Model.users[i],new Date(),null,null)); 
+	    	Model.comments.push(new Comment(i,new Date(), "Comment " + i , Model.users[i],new Date(),null,null)); 
 		    Model.sources.push(new Source(i,new Date(),"Namn " + i, null,null,null));
 		    Model.tags.push(new Tag(i,new Date(),"Namn " + i, null));
 	    }
     };
+    
+    Model.prototype.save = function(param)
+    {
+    	alert("a");
+    	alert(param);
+    };
+    
     return Model;
 })();
+
+window.ModelInstance = Model();
