@@ -1,32 +1,32 @@
-
-
-var Model = (function () {
-    function Model() {
-    	Model.prototype.generateData();   
-    }
+if (!window.Model)
+{
+function getModel() {
+    //function Model() {
+    //	Model.prototype.generateData();   
+    //}
     
-    Model.users = null;
-    Model.articles = null;
-    Model.comments = null;
-    Model.sources = null;
-    Model.tags = null;
-    Model.votes = null;
+    Model.prototype.users = null;
+    Model.prototype.articles = null;
+    Model.prototype.comments = null;
+    Model.prototype.sources = null;
+    Model.prototype.tags = null;
+    Model.prototype.votes = null;
     
     Model.prototype.generateData = function()
     {
-    	Model.users = Array();
-	    Model.articles = Array();
-	    Model.comments = Array();
-	    Model.sources = Array();
-	    Model.tags = Array();
-	    Model.votes = Array();
+    	this.users = Array();
+	    this.articles = Array();
+	    this.comments = Array();
+	    this.sources = Array();
+	    this.tags = Array();
+	    this.votes = Array();
 	    for (var i=0;i<10;i++)
 	    {
-	    	Model.users.push(new User("user " + i,i + "@test.com",null,null,null,i));
-	    	Model.articles.push(new Article(i,new Date(),null,null,null));
-	    	Model.comments.push(new Comment(i,new Date(), "Comment " + i , Model.users[i],new Date(),null,null)); 
-		    Model.sources.push(new Source(i,new Date(),"Namn " + i, null,null,null));
-		    Model.tags.push(new Tag(i,new Date(),"Namn " + i, null));
+	    	this.users.push(new User("user " + i,i + "@test.com",null,null,null,i));
+	    	this.articles.push(new Article(i,new Date(),null,null,null));
+	    	this.comments.push(new Comment(i,new Date(), "Comment " + i , this.users[i],new Date(),null,null)); 
+		    this.sources.push(new Source(i,new Date(),"Namn " + i, null,null,null));
+		    this.tags.push(new Tag(i,new Date(),"Namn " + i, null));
 	    }
     };
     
@@ -36,7 +36,8 @@ var Model = (function () {
     	alert(param);
     };
     
-    return Model;
-})();
+}
+window.Model = getModel();
 
-window.ModelInstance = Model();
+}
+
