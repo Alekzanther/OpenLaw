@@ -1,18 +1,13 @@
-if (!window.Model)
-{
-function getModel() {
-    //function Model() {
-    //	Model.prototype.generateData();   
-    //}
+var Model = {
     
-    Model.prototype.users = null;
-    Model.prototype.articles = null;
-    Model.prototype.comments = null;
-    Model.prototype.sources = null;
-    Model.prototype.tags = null;
-    Model.prototype.votes = null;
+    users: null,
+    articles: null,
+    comments: null,
+    sources: null,
+    tags: null,
+    votes: null,
     
-    Model.prototype.generateData = function()
+    generateData: function()
     {
     	this.users = Array();
 	    this.articles = Array();
@@ -28,16 +23,12 @@ function getModel() {
 		    this.sources.push(new Source(i,new Date(),"Namn " + i, null,null,null));
 		    this.tags.push(new Tag(i,new Date(),"Namn " + i, null));
 	    }
-    };
+    },
     
-    Model.prototype.save = function(param)
+    save: function(param)
     {
     	alert("a");
     	alert(param);
-    };
-    
-}
-window.Model = getModel();
-
-}
+    }
+};
 
