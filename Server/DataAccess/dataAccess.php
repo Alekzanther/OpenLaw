@@ -24,7 +24,7 @@ class dataAccess
     
     function getData($param)
     {
-        return json_encode(model::global_instance()->items);
+		return json_encode(model::global_instance()->items);
     }
     
     public function setData($type ,$json)
