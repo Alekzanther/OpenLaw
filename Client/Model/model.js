@@ -1,4 +1,4 @@
-var Model = {
+var model = {
 
 	users : Array(),
 	articles : Array(),
@@ -34,12 +34,12 @@ var Model = {
 		this.test = "data";
 		$.get("http://localhost/OpenLaw/Server/DataAccess/getData.php?type=all", function(data, status) {
 			jsonData = JSON.parse(data);
-			Model.json = data;
-
+			model.json = data;
+			model.jsonData = jsonData;
 			////// TAGS
 			for (item in jsonData.tag) {
 				item = jsonData.tag[item];
-				Model.tags.push(new Tag(item.id, item.create_date, item.name, Array(),Array()));
+				model.tags.push(new Tag(item.id, item.create_date, item.name, Array(),Array()));
 				//
 			}
 
@@ -50,18 +50,18 @@ var Model = {
 
 				for(tagId in item.tagIds)
 				{
-					for (u = 0; u < Model.tags.length; u++)
+					for (u = 0; u < model.tags.length; u++)
 					{
-						if (Model.tags[u].id == item.tagIds[tagId])
+						if (model.tags[u].id == item.tagIds[tagId])
 						{
-							newArticle.tags.push(Model.tags[u]);
-							Model.tags[u].articles.push(newArticle);
+							newArticle.tags.push(model.tags[u]);
+							model.tags[u].articles.push(newArticle);
 							break;
 						}
 					}
 				}
 
-				Model.articles.push(newArticle);
+				model.articles.push(newArticle);
 				//
 			}
 
@@ -71,15 +71,15 @@ var Model = {
 
 				var newComment = new Comment(comment.id, comment.create_date, comment.value, null, comment.edit_date, null, Array());
 
-				for ( u = 0; u < Model.articles.length; u++) {
-					if (Model.articles[u].id == comment.articleId) {
-						newComment.article = Model.articles[u];
-						Model.articles[u].comments.push(newComment);
+				for ( u = 0; u < model.articles.length; u++) {
+					if (model.articles[u].id == comment.articleId) {
+						newComment.article = model.articles[u];
+						model.articles[u].comments.push(newComment);
 						break;
 					}
 				}
 
-				Model.comments.push(newComment);
+				model.comments.push(newComment);
 
 			}
 
@@ -89,26 +89,26 @@ var Model = {
 				newSource = new Source(item.id, item.create_date, item.name, null, Array(), Array());
 
 				for (articleId in item.articleIds) {
-					for ( u = 0; u < Model.articles.length; u++) {
-						if (Model.articles[u].id == item.articleIds[articleId]) {
-							newSource.articles.push(Model.articles[u]);
-							Model.articles[u].sources.push(newSource);
+					for ( u = 0; u < model.articles.length; u++) {
+						if (model.articles[u].id == item.articleIds[articleId]) {
+							newSource.articles.push(model.articles[u]);
+							model.articles[u].sources.push(newSource);
 							break;
 						}
 					}
 				}
 
 				for (tagId in item.tagIds) {
-					for ( u = 0; u < Model.tags.length; u++) {
-						if (Model.tags[u].id == item.tagIds[tagId]) {
-							newSource.tags.push(Model.tags[u]);
-							Model.tags[u].sources.push(newSource);
+					for ( u = 0; u < model.tags.length; u++) {
+						if (model.tags[u].id == item.tagIds[tagId]) {
+							newSource.tags.push(model.tags[u]);
+							model.tags[u].sources.push(newSource);
 							break;
 						}
 					}
 				}
 
-				Model.sources.push(newSource);
+				model.sources.push(newSource);
 				//
 			}
 
@@ -118,25 +118,25 @@ var Model = {
 				newVote = new Vote(null, item.value, item.create_data, null, null, item.id);
 
 				if (item.commentId != null) {
-					for ( u = 0; u < Model.comments.length; u++) {
-						if (Model.comments[u].id == item.commentId) {
-							newVote.comment = Model.comments[u];
-							Model.comments[u].votes.push(newVote);
+					for ( u = 0; u < model.comments.length; u++) {
+						if (model.comments[u].id == item.commentId) {
+							newVote.comment = model.comments[u];
+							model.comments[u].votes.push(newVote);
 							break;
 						}
 					}
 				}
 
 				if (item.articleId != null) {
-					for ( u = 0; u < Model.articles.length; u++) {
-						if (Model.articles[u].id == item.articleId) {
-							newVote.article = Model.articles[u];
-							Model.articles[u].votes.push(newVote);
+					for ( u = 0; u < model.articles.length; u++) {
+						if (model.articles[u].id == item.articleId) {
+							newVote.article = model.articles[u];
+							model.articles[u].votes.push(newVote);
 							break;
 						}
 					}
 				}
-				Model.votes.push(newVote);
+				model.votes.push(newVote);
 				//
 			}
 
@@ -146,10 +146,10 @@ var Model = {
 				newUser = new User(item.name, item.email, Array(), Array(), null, item.id);
 
 				for (commentId in item.commentIds) {
-					for ( u = 0; u < Model.comments.length; u++) {
-						if (Model.comments[u].id == item.commentIds[commentId]) {
-							newUser.comments.push(Model.comments[u]);
-							Model.comments[u].user = newUser;
+					for ( u = 0; u < model.comments.length; u++) {
+						if (model.comments[u].id == item.commentIds[commentId]) {
+							newUser.comments.push(model.comments[u]);
+							model.comments[u].user = newUser;
 							break;
 						}
 					}
@@ -157,33 +157,33 @@ var Model = {
 
 				for (voteId in item.voteIds) 
 				{
-					for ( u = 0; u < Model.votes.length; u++) {
+					for ( u = 0; u < model.votes.length; u++) {
 
-						if (Model.votes[u].id == item.voteIds[voteId]) {
+						if (model.votes[u].id == item.voteIds[voteId]) {
 
-							newUser.votes.push(Model.votes[u]);
-							Model.votes[u].user = newUser;
+							newUser.votes.push(model.votes[u]);
+							model.votes[u].user = newUser;
 							break;
 						}
 					}
 				}
 				
 				if (item.sourceId != null) {
-					for ( u = 0; u < Model.sources.length; u++) {
-						if (Model.sources[u].id == item.sourceId) {
-							newUser.source = Model.sources[u];
-							Model.sources[u].user = newUser;
+					for ( u = 0; u < model.sources.length; u++) {
+						if (model.sources[u].id == item.sourceId) {
+							newUser.source = model.sources[u];
+							model.sources[u].user = newUser;
 							break;
 						}
 					}
 				}
 
-				Model.users.push(newUser);
+				model.users.push(newUser);
 				//
 			}
 
 		});
 	}
 };
-Model.getRealData();
+model.getRealData();
 

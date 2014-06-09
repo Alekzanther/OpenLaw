@@ -7,6 +7,8 @@ include_once  'comment.php';
 include_once  'source.php';
 include_once  'tag.php';
 include_once  'vote.php';
+include 'ChromePhp.php';
+
 
 class model
 {
@@ -50,15 +52,19 @@ class model
         $this->items["tag"] = $this->getTags();
         $this->items["article"] = $this->getArticles();
         $this->items["source"] = $this->getSources();
+        ChromePhp::log($this->items["source"]);
         
         $this->linkUserVotes();
         $this->linkUserComments();
+		$this->linkUserSource();
         $this->linkSourceTag();
         $this->linkCommentVote();
         $this->linkArticleVote();
         $this->linkArticleTag();
         $this->linkArticleComment();
         $this->linkArticleSource();
+		
+		ChromePhp::log($this->items["source"]);
      }
  
     private function linkUserVotes()
@@ -94,14 +100,14 @@ class model
     private function linkUserSource()
     {
         $link = databaseConnection::getConnection();   
-        $sql = 'SELECT * FROM `user_comment`';
+        $sql = 'SELECT * FROM `user_source`';
         $result = $link->query($sql);
         while ($row = $result->fetch_array()) 
         {
             $userId = $row['user_id'];
             $sourceId = $row['source_id'];
             
-            $this->items["user"][$userId]->$sourceId = $sourceId;
+            $this->items["user"][$userId]->sourceId = $sourceId;
             $this->items["source"][$sourceId]->userId = $userId;
         }
     }
@@ -195,6 +201,8 @@ class model
             
             $this->items["article"][$articleId]->sourceIds[] = $sourceId;
             $this->items["source"][$sourceId]->articleIds[] = $articleId;
+			
+			ChromePhp::log($articleId);
         }
     }
 
@@ -245,14 +253,12 @@ class model
         $dbItems = array();
         $sql = 'SELECT * FROM `article`';
         $result = $link->query($sql);
-        $i = 0;
         while ($row = $result->fetch_array()) 
         {
             $dbItem = new article;
             $dbItem->id = $row['id'];
             $dbItem->create_date = $row['create_date'];
             $dbItems[$dbItem->id] = $dbItem;
-            $i++;
         }
         return $dbItems;
         
@@ -264,7 +270,7 @@ class model
         $dbItems = array();
         $sql = 'SELECT * FROM `source`';
         $result = $link->query($sql);
-        $i = 0;
+        
         while ($row = $result->fetch_array())  
         {
             $dbItem = new source;
@@ -272,8 +278,9 @@ class model
             $dbItem->create_date = $row['create_date'];
             $dbItem->name = $row['name'];
             $dbItems[$dbItem->id] = $dbItem;
-            $i++;
+			
         }
+		
         return $dbItems;
         
     }
