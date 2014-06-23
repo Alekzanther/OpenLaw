@@ -30,15 +30,23 @@ class dataAccess
     public function setData($type ,$json)
     {
         $jsonData = json_decode($json,true);
-        #var_dump($jsonData);
         $keys = array_keys($jsonData);
+		 
+		
         foreach($keys as $key)
         {
+        	$id = $jsonData[$key]["id"];
+			$realItem = model::global_instance()->items[$key][$id];
+			ChromePhp::log($key . " in php-model: ");
+			ChromePhp::log($realItem);
+			
             foreach ($jsonData[$key] as $jsonType)
             {
+            	//ChromePhp::log($jsonData[$key].name);
                 $id = $jsonType["id"];
-                
-                $realItem = model::global_instance()->$items[$key][$id];
+				  
+                $realItem = model::global_instance()->items[$key][$id];
+                //ChromePhp::log($realItem);      
                 $this->mergeData($jsonType, $realItem);
             }
         }

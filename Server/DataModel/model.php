@@ -52,7 +52,7 @@ class model
         $this->items["tag"] = $this->getTags();
         $this->items["article"] = $this->getArticles();
         $this->items["source"] = $this->getSources();
-        ChromePhp::log($this->items["source"]);
+        //ChromePhp::log($this->items["source"]);
         
         $this->linkUserVotes();
         $this->linkUserComments();
@@ -64,7 +64,7 @@ class model
         $this->linkArticleComment();
         $this->linkArticleSource();
 		
-		ChromePhp::log($this->items["source"]);
+		//ChromePhp::log($this->items["source"]);
      }
  
     private function linkUserVotes()
@@ -202,7 +202,6 @@ class model
             $this->items["article"][$articleId]->sourceIds[] = $sourceId;
             $this->items["source"][$sourceId]->articleIds[] = $articleId;
 			
-			ChromePhp::log($articleId);
         }
     }
 

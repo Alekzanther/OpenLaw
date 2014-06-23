@@ -25,8 +25,30 @@ var model = {
 	},
 
 	save : function(param) {
-		alert(this.users[0].name);
-		alert(param.name);
+		//alert(param.name);
+		var cache = [];
+		model.SaveObject = "{\"user\":" + JSON.stringify(param, function(key, value) {
+		    if (typeof value === 'object' && value !== null) {
+		        if (cache.indexOf(value) !== -1) {
+		            // Circular reference found, discard key
+		            //console.log(value);
+		            return;
+		        }
+
+		        
+		        cache.push(value);
+		    }
+		    
+		    return value;
+		});
+		model.SaveObject += "}";
+		cache = null; // Enable garbage collection
+		//console.log("http://localhost/OpenLaw/Server/DataAccess/setData.php?type=user?data=" + model.SaveObject);
+		
+		$.post( "http://localhost/OpenLaw/Server/DataAccess/setData.php", { data : model.SaveObject }, function( data ) {
+			
+			//$( ".result" ).html( data );
+		});
 	},
 
 	getRealData : function() {
