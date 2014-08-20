@@ -32,22 +32,26 @@ class dataAccess
         $jsonData = json_decode($json,true);
         $keys = array_keys($jsonData);
 		 
-		
+		ChromePhp::log($jsonData);
         foreach($keys as $key)
         {
         	$id = $jsonData[$key]["id"];
+			$name = $jsonData[$key]["name"];
+			ChromePhp::log($id);
+			ChromePhp::log($name);
 			$realItem = model::global_instance()->items[$key][$id];
-			ChromePhp::log($key . " in php-model: ");
+			//ChromePhp::log($key . " in php-model: ");
 			ChromePhp::log($realItem);
-			
-            foreach ($jsonData[$key] as $jsonType)
+			$this->mergeData($jsonData, $realItem);
+			continue;
+            foreach ($jsonData[$key] as $jsonValue)
             {
-            	//ChromePhp::log($jsonData[$key].name);
+            	//ChromePhp::log($jsonData[$key]);
                 $id = $jsonType["id"];
-				  
+				ChromePhp::log($jsonValue . " Key=" . $key);    
                 $realItem = model::global_instance()->items[$key][$id];
-                //ChromePhp::log($realItem);      
-                $this->mergeData($jsonType, $realItem);
+                ChromePhp::log($realItem);      
+                $this->mergeData($jsonValue, $realItem);
             }
         }
         //$user->fromJSON($json);
@@ -107,12 +111,15 @@ class dataAccess
         
         $instanceReflect = new ReflectionClass($modelObj);
         $instanceProps = $instanceReflect->getProperties();
-        
         $keys = array_keys($jsonObj);
+		ChromePhp::log("keys " . $keys );
         foreach($keys as $key)
         {
+        	ChromePhp::log("key " . $key );
             $value = $jsonObj[$key];
+			ChromePhp::log("value " . $value );
             $prop = $instanceReflect->getProperty($key);
+			ChromePhp::log("prop " . $prop );
             if($prop->getValue($modelObj) != $value)
             {
                 $this->changeValue($prop, $modelObj, $value);
@@ -123,6 +130,7 @@ class dataAccess
     function changeValue($prop, $modelObj, $newValue)
     {
         $prop->setValue($modelObj ,$newValue);
+		ChromePhp::log("changed value to " . $newValue);
     }
     
     function changeReferences()

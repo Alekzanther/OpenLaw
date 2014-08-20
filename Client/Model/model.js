@@ -26,6 +26,7 @@ var model = {
 
 	save : function(param) {
 		//alert(param.name);
+		console.log("Idiotsystem");
 		var cache = [];
 		model.SaveObject = "{\"user\":" + JSON.stringify(param, function(key, value) {
 		    if (typeof value === 'object' && value !== null) {
@@ -41,14 +42,16 @@ var model = {
 		    
 		    return value;
 		});
+		console.log("Idiotsystem2");
 		model.SaveObject += "}";
 		cache = null; // Enable garbage collection
-		//console.log("http://localhost/OpenLaw/Server/DataAccess/setData.php?type=user?data=" + model.SaveObject);
-		
+		//	console.log("http://localhost/OpenLaw/Server/DataAccess/setData.php?type=user?data=" + model.SaveObject);
+		console.log("Idiotsystem3");
 		$.post( "http://localhost/OpenLaw/Server/DataAccess/setData.php", { data : model.SaveObject }, function( data ) {
 			
 			//$( ".result" ).html( data );
 		});
+		console.log("Idiotsystem4");
 	},
 
 	getRealData : function() {
