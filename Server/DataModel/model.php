@@ -257,6 +257,8 @@ class model
             $dbItem = new article;
             $dbItem->id = $row['id'];
             $dbItem->create_date = $row['create_date'];
+			$dbItem->name = $row['name'];
+			$dbItem->value = $row['value'];
             $dbItems[$dbItem->id] = $dbItem;
         }
         return $dbItems;

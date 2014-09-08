@@ -1,10 +1,24 @@
-<header ng-repeat-start="item in model.users">
+<header ng-repeat-start="item in model.articles">
 
   </header>
-	  <div class="body">
-	  	<input type="text" ng-model="item.name"/>
+	  <div class="body article">
+	  	
+	  	<H1>{{item.name}}</H1>
+	  	{{item.create_date}} 
+	  	{{item.id}}
+	  	{{item.value}}
+	  	
+	  	<h2>Källor</h2>
+	  	<div ng-repeat="src in item.sources">
+	  		{{src.name}} ({{src.user.name}})
+	  	</div>
+	  	<h2>Kommentarer</h2>
+	  	<div ng-repeat="comm in item.comments">
+	  		<h4>{{comm.user.name}} - {{comm.create_date}}:</h4> 
+	  		{{comm.value}}
+	  	</div>
+	  	
 	  	<input type="button" ng-click="model.save(item)"/>
 	  </div>
 <div ng-repeat-end>
-----------------------|
 </div>

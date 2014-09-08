@@ -6,5 +6,7 @@ class article
     public $voteIds = array();
     public $sourceIds = array();
     public $commentIds = array();
+	public $value;
+	public $name;
 }
 ?>

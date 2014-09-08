@@ -71,7 +71,7 @@ var model = {
 			///// ARTICLES
 			for (item in jsonData.article) {
 				item = jsonData.article[item];
-				newArticle = new Article(item.id, item.create_date, Array(), Array(), Array(),Array());
+				newArticle = new Article(item.id, item.create_date, Array(), Array(), Array(),Array(), item.value, item.name);
 
 				for(tagId in item.tagIds)
 				{
