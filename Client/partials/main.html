@@ -1,24 +1,34 @@
-<header ng-repeat-start="item in model.articles">
+<header  ng-repeat-start="article in model.articles">
 
   </header>
-	  <div class="body article">
+	  <div class="body article" ng-controller="articleController">
 	  	
-	  	<H1>{{item.name}}</H1>
-	  	{{item.create_date}} 
-	  	{{item.id}}
-	  	{{item.value}}
+	  	<H1>{{article.name}}</H1>
+	  	{{article.create_date}}
 	  	
+	  	{{article.id}}
+	  	{{article.value}}
+	  	Votes = {{voteCount}}
 	  	<h2>Källor</h2>
-	  	<div ng-repeat="src in item.sources">
+	  	
+	  	<div ng-controller="voteController" >
+	  		<div>
+	  			<a type="button" ng-click="voteUp()">^</a>
+	  				{{voteCount}}
+	  			<a type="button" ng-click="voteDown()">v</a>
+	  		</div>
+	  	</div>
+	  	
+	  	<div ng-repeat="src in article.sources">
 	  		{{src.name}} ({{src.user.name}})
 	  	</div>
 	  	<h2>Kommentarer</h2>
-	  	<div ng-repeat="comm in item.comments">
+	  	<div ng-repeat="comm in article.comments" >
 	  		<h4>{{comm.user.name}} - {{comm.create_date}}:</h4> 
 	  		{{comm.value}}
 	  	</div>
 	  	
-	  	<input type="button" ng-click="model.save(item)"/>
+	  	<input type="button" ng-click="model.save(article)"/>
 	  </div>
 <div ng-repeat-end>
 </div>
