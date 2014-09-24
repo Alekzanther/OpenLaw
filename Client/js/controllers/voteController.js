@@ -13,13 +13,11 @@ angular.module('openLaw.controllers').controller('voteController', ['$scope', '$
 	
 	$scope.voteUp = function()
 	{
-		console.log("UP");
 		$scope.voteCount += 1;
 	};
 	
 	$scope.voteDown = function()
 	{
-		console.log("Down");
 		$scope.voteCount -= 1;
 	};
 }]);
