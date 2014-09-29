@@ -323,7 +323,27 @@ class model
             $i++;
         }
         return $dbItems;
-        
+    }
+
+	public function changeValue($prop, $modelObj, $newValue)
+    {
+        $prop->setValue($modelObj ,$newValue);
+		
+		$link = databaseConnection::getConnection();
+		
+		$column = $prop->getName();
+		$table = get_class($modelObj);
+		$id = $modelObj->id;
+		//UPDATE `article` SET `id`=[value-1],`create_date`=[value-2],`name`=[value-3],`value`=[value-4] WHERE 1
+		$sql = 'UPDATE ' . $table . ' SET ' . $column . '=\'' . $newValue . '\' WHERE id=' . $id;
+		
+		$sanitizedSQL = mysqli_real_escape_string($link, $sql);
+		$result = mysqli_query($link, $sql);
+		
+		ChromePhp::log("SQL - res " . $result);
+		ChromePhp::log("SQL - " . $sql);
+		ChromePhp::log("changed value to " . $prop->getValue($modelObj));
+		ChromePhp::log($modelObj);
     }
 }
 ?>

@@ -32,29 +32,20 @@ class dataAccess
         $jsonData = json_decode($json,true);
         $keys = array_keys($jsonData);
 		 
-		ChromePhp::log($jsonData);
+		//ChromePhp::log($jsonData);
         foreach($keys as $key)
         {
         	$id = $jsonData[$key]["id"];
-			$name = $jsonData[$key]["name"];
-			ChromePhp::log($id);
-			ChromePhp::log($name);
+			//$name = $jsonData[$key]["name"];
+			//$value = $jsonData[$key]["value"];
+			//ChromePhp::log($id);
+			//ChromePhp::log($name);
+			//ChromePhp::log($value);
 			$realItem = model::global_instance()->items[$key][$id];
 			//ChromePhp::log($key . " in php-model: ");
-			ChromePhp::log($realItem);
-			$this->mergeData($jsonData, $realItem);
-			continue;
-            foreach ($jsonData[$key] as $jsonValue)
-            {
-            	//ChromePhp::log($jsonData[$key]);
-                $id = $jsonType["id"];
-				ChromePhp::log($jsonValue . " Key=" . $key);    
-                $realItem = model::global_instance()->items[$key][$id];
-                ChromePhp::log($realItem);      
-                $this->mergeData($jsonValue, $realItem);
-            }
+			//ChromePhp::log($realItem);
+			$this->mergeData($jsonData, $realItem);            
         }
-        //$user->fromJSON($json);
     }
     
     function JSONSetVote($obj)
@@ -108,30 +99,36 @@ class dataAccess
     
     public function mergeData($jsonObj, $modelObj)
     {
-        
         $instanceReflect = new ReflectionClass($modelObj);
         $instanceProps = $instanceReflect->getProperties();
-        $keys = array_keys($jsonObj);
-		ChromePhp::log("keys " . $keys );
-        foreach($keys as $key)
+        $objects = array_keys($jsonObj);
+		//ChromePhp::log("objects " . $objects );
+        foreach($objects as $object)
         {
-        	ChromePhp::log("key " . $key );
-            $value = $jsonObj[$key];
-			ChromePhp::log("value " . $value );
-            $prop = $instanceReflect->getProperty($key);
-			ChromePhp::log("prop " . $prop );
-            if($prop->getValue($modelObj) != $value)
-            {
-                $this->changeValue($prop, $modelObj, $value);
-            }
+        	//ChromePhp::log("object " . gettype($object) );
+            $value = $jsonObj[$object];
+			foreach(array_keys($value) as $key)
+			{
+				//ChromePhp::log("prop " . $key);
+				//ChromePhp::log("value " . $value[$key] );
+				
+				if (property_exists($object, $key))
+				{
+					$prop = $instanceReflect->getProperty($key);
+					
+		            if($prop->getValue($modelObj) != $value[$key])
+		            {
+		                model::global_instance()->changeValue($prop, $modelObj, $value[$key]);
+		            }
+				}
+				else {
+					//ChromePhp::log("Could not find key " . $key );
+				}
+			}
         }
     }
 
-    function changeValue($prop, $modelObj, $newValue)
-    {
-        $prop->setValue($modelObj ,$newValue);
-		ChromePhp::log("changed value to " . $newValue);
-    }
+    
     
     function changeReferences()
     {

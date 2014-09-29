@@ -16,8 +16,8 @@
 //	}
 //}
 
-var User = (function () {
-    function User(name, email, votes, comments, source, id) {
+var user = (function () {
+    function user(name, email, votes, comments, source, id) {
         this.name = name;
         this.comments = comments;
         this.email = email;
@@ -26,10 +26,10 @@ var User = (function () {
         this.votes = votes;
     }
     
-    User.prototype.save = function()
+    user.prototype.save = function()
     {
     	window.ModelInstance.save(this);
     };
     
-    return User;
+    return user;
 })();

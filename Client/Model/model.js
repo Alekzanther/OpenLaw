@@ -16,19 +16,18 @@ var model = {
 		this.tags = Array();
 		this.votes = Array();
 		for (var i = 0; i < 10; i++) {
-			this.users.push(new User("user " + i, i + "@test.com", null, null, null, i));
-			this.articles.push(new Article(i, new Date(), null, null, null));
-			this.comments.push(new Comment(i, new Date(), "Comment " + i, this.users[i], new Date(), null, null));
-			this.sources.push(new Source(i, new Date(), "Namn " + i, null, null, null));
-			this.tags.push(new Tag(i, new Date(), "Namn " + i, null));
+			this.users.push(new user("user " + i, i + "@test.com", null, null, null, i));
+			this.articles.push(new article(i, new Date(), null, null, null));
+			this.comments.push(new comment(i, new Date(), "Comment " + i, this.users[i], new Date(), null, null));
+			this.sources.push(new source(i, new Date(), "Namn " + i, null, null, null));
+			this.tags.push(new tag(i, new Date(), "Namn " + i, null));
 		}
 	},
 
 	save : function(param) {
 		//alert(param.name);
-		console.log("Idiotsystem");
 		var cache = [];
-		model.SaveObject = "{\"user\":" + JSON.stringify(param, function(key, value) {
+		model.SaveObject = "{\"" + param.constructor.name + "\":" + JSON.stringify(param, function(key, value) {
 		    if (typeof value === 'object' && value !== null) {
 		        if (cache.indexOf(value) !== -1) {
 		            // Circular reference found, discard key
@@ -42,16 +41,13 @@ var model = {
 		    
 		    return value;
 		});
-		console.log("Idiotsystem2");
 		model.SaveObject += "}";
 		cache = null; // Enable garbage collection
 		//	console.log("http://localhost/OpenLaw/Server/DataAccess/setData.php?type=user?data=" + model.SaveObject);
-		console.log("Idiotsystem3");
 		$.post( "http://localhost/OpenLaw/Server/DataAccess/setData.php", { data : model.SaveObject }, function( data ) {
 			
 			//$( ".result" ).html( data );
 		});
-		console.log("Idiotsystem4");
 	},
 
 	getRealData : function() {
@@ -64,14 +60,14 @@ var model = {
 			////// TAGS
 			for (item in jsonData.tag) {
 				item = jsonData.tag[item];
-				model.tags.push(new Tag(item.id, item.create_date, item.name, Array(),Array()));
+				model.tags.push(new tag(item.id, item.create_date, item.name, Array(),Array()));
 				//
 			}
 
 			///// ARTICLES
 			for (item in jsonData.article) {
 				item = jsonData.article[item];
-				newArticle = new Article(item.id, item.create_date, Array(), Array(), Array(),Array(), item.value, item.name);
+				newArticle = new article(item.id, item.create_date, Array(), Array(), Array(),Array(), item.value, item.name);
 
 				for(tagId in item.tagIds)
 				{
@@ -91,13 +87,13 @@ var model = {
 			}
 
 			///// COMMENTS
-			for (comment in jsonData.comment) {
-				comment = jsonData.comment[comment];
+			for (item in jsonData.comment) {
+				item = jsonData.comment[item];
 
-				var newComment = new Comment(comment.id, comment.create_date, comment.value, null, comment.edit_date, null, Array());
+				var newComment = new comment(item.id, item.create_date, item.value, null, item.edit_date, null, Array());
 
 				for ( u = 0; u < model.articles.length; u++) {
-					if (model.articles[u].id == comment.articleId) {
+					if (model.articles[u].id == item.articleId) {
 						newComment.article = model.articles[u];
 						model.articles[u].comments.push(newComment);
 						break;
@@ -111,7 +107,7 @@ var model = {
 			////// SOURCES
 			for (item in jsonData.source) {
 				item = jsonData.source[item];
-				newSource = new Source(item.id, item.create_date, item.name, null, Array(), Array());
+				newSource = new source(item.id, item.create_date, item.name, null, Array(), Array());
 
 				for (articleId in item.articleIds) {
 					for ( u = 0; u < model.articles.length; u++) {
@@ -140,7 +136,7 @@ var model = {
 			////// VOTES
 			for (item in jsonData.vote) {
 				item = jsonData.vote[item];
-				newVote = new Vote(null, item.value, item.create_data, null, null, item.id);
+				newVote = new vote(null, item.value, item.create_data, null, null, item.id);
 
 				if (item.commentId != null) {
 					for ( u = 0; u < model.comments.length; u++) {
@@ -168,7 +164,7 @@ var model = {
 			////// USERS
 			for (item in jsonData.user) {
 				item = jsonData.user[item];
-				newUser = new User(item.name, item.email, Array(), Array(), null, item.id);
+				newUser = new user(item.name, item.email, Array(), Array(), null, item.id);
 
 				for (commentId in item.commentIds) {
 					for ( u = 0; u < model.comments.length; u++) {

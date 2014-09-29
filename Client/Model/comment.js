@@ -8,8 +8,8 @@
 //	article: Article;
 //}
 
-var Comment = (function () {
-    function Comment(id, create_date, value, user,edit_date,article, votes) {
+var comment = (function () {
+    function comment(id, create_date, value, user,edit_date,article, votes) {
         this.id = id;
         this.create_date = create_date;
         this.value = value;
@@ -18,5 +18,5 @@ var Comment = (function () {
         this.article = article;
         this.votes = votes;
     }
-    return Comment;
+    return comment;
 })();

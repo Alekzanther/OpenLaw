@@ -6,8 +6,8 @@
 //	comments: Array<Comment>;
 //}
 
-var Article = (function () {
-    function Article(id, create_date, votes, sources,comments, tags, value, name) {
+var article = (function () {
+    function article(id, create_date, votes, sources,comments, tags, value, name) {
         this.id = id;
         this.create_date = create_date;
         this.votes = votes;
@@ -17,5 +17,5 @@ var Article = (function () {
         this.value = value;
         this.name = name; 
     }
-    return Article;
+    return article;
 })();

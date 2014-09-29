@@ -7,8 +7,8 @@
 //	articles: Array<Article>; 
 //}
 
-var Source = (function () {
-    function Source(id, create_date, name, user,tags,articles) {
+var source = (function () {
+    function source(id, create_date, name, user,tags,articles) {
         this.id = id;
         this.create_date = create_date;
         this.name = name;
@@ -16,5 +16,5 @@ var Source = (function () {
         this.tags = tags;
         this.articles = articles;
     }
-    return Source;
+    return source;
 })();

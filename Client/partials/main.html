@@ -6,7 +6,7 @@
 	  	<H1>{{article.name}}</H1>
 	  	{{article.create_date}}
 	  	
-	  	{{article.value}}
+	  	<input type="text" name="input" ng-model="article.value"></intput>
 	  	<h2>Källor</h2>
 	  	
 	  	<div ng-controller="voteController" >
@@ -19,6 +19,8 @@
 	  	
 	  	<div ng-repeat="src in article.sources">
 	  		{{src.name}} ({{src.user.name}})
+	  		<input type="text" name="input" ng-model="src.user.name"></intput>
+	  		<input type="button" ng-click="model.save(src.user)"/>
 	  	</div>
 	  	<h2>Kommentarer</h2>
 	  	<div ng-repeat="comm in article.comments" >

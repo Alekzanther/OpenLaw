@@ -7,8 +7,8 @@
 //	article: Article;
 //}
 
-var Vote = (function () {
-    function Vote(comment, value, create_date, user, article, id) {
+var vote = (function () {
+    function vote(comment, value, create_date, user, article, id) {
         this.comment = comment;
         this.value = value;
         this.create_date = create_date;
@@ -16,5 +16,5 @@ var Vote = (function () {
         this.article = article;
         this.id = id;
     }
-    return Vote;
+    return vote;
 })();
