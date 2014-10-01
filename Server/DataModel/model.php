@@ -340,10 +340,10 @@ class model
 		$sanitizedSQL = mysqli_real_escape_string($link, $sql);
 		$result = mysqli_query($link, $sql);
 		
-		ChromePhp::log("SQL - res " . $result);
-		ChromePhp::log("SQL - " . $sql);
-		ChromePhp::log("changed value to " . $prop->getValue($modelObj));
-		ChromePhp::log($modelObj);
+		//ChromePhp::log("SQL - res " . $result);
+		//ChromePhp::log("SQL - " . $sql);
+		//ChromePhp::log("changed value to " . $prop->getValue($modelObj));
+		//ChromePhp::log($modelObj);
     }
 }
 ?>
