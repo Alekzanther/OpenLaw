@@ -2,4 +2,8 @@ angular.module('openLaw.controllers').controller('login', ['$scope', '$http', fu
 	$scope.username = "username";
 	$scope.password = "password";
 	
+	$scope.authenticate = function(){
+		$.post( "http://localhost/OpenLaw/Server/DataAccess/authenticate.php", { username : $scope.username, password : $scope.password }, function( data ) { console.log("klar"); });
+	}; 
+	
 }]);

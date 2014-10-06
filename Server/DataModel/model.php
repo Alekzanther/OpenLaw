@@ -24,6 +24,7 @@ class model
         if($singleton_instance === null) {
             $singleton_instance = new model();
             $singleton_instance->initializeModel();
+			ChromePhp::log("MODEL INIT");
         }
         return($singleton_instance);
     }

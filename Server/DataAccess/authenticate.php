@@ -2,8 +2,7 @@
 session_start();
 include_once $_SERVER['DOCUMENT_ROOT'] . '/OpenLaw/Server/DataAccess/dataAccess.php';
 $view = dataAccess::global_instance();
-ChromePhp::log("SESSION : " . $_SESSION["username"]);
-$data = $_POST['data'];
-$type = $_POST['type'];
-echo($view->setData($type, $data));
+$username = $_POST['username'];
+$password = $_POST['password'];
+echo($view->authenticateUser($username, $password));
 ?>

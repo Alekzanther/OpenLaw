@@ -1,4 +1,5 @@
 <?php
+//session_start();
 include_once $_SERVER['DOCUMENT_ROOT'] . '/OpenLaw/Server/DataModel/model.php';
 
 class dataAccess
@@ -13,18 +14,41 @@ class dataAccess
     }
      
     public static function global_instance() {
-        static $singleton_instance = null;
-        if($singleton_instance === null) {
-            $singleton_instance = new dataAccess();
+        if(self::$singleton_instance === null) {
+            self::$singleton_instance = new dataAccess();
+			ChromePhp::log("DATA ACCESS INIT");
         }
          
-        return($singleton_instance);
+        return(self::$singleton_instance);
     }
     
+	public function authenticateUser($username, $password)
+	{
+		
+		$userExists = FALSE;
+		foreach (model::global_instance()->items["user"] as $user) {
+			if ($user->name == $username) {
+				$_SESSION["username"] = $username;
+				$userExists = TRUE; 
+			}
+		}
+		
+		if (!$userExists) {
+			ChromePhp::log("Illegal login, terminating session! Cya around...");
+			$_SESSION["username"] = "";
+		}
+		
+		ChromePhp::log("SESSION : " . $_SESSION["username"]);
+		
+	}
+	
     
     function getData($param)
     {
-		return json_encode(model::global_instance()->items);
+    	if ($_SESSION["username"] != "") {
+    		return json_encode(model::global_instance()->items);		
+    	}
+		return "";
     }
     
     public function setData($type ,$json)
