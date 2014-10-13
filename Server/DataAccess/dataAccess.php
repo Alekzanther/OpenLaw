@@ -50,8 +50,72 @@ class dataAccess
     	}
 		return "";
     }
-    
-    public function setData($type ,$json)
+	
+	public function createData($json) 
+	{
+		ChromePhp::log("hej på dig från äpäpä");
+		$jsonData = json_decode($json,true);
+        $keys = array_keys($jsonData);
+		 
+		ChromePhp::log($jsonData);
+        foreach($keys as $key)
+        {
+        	       	
+			ChromePhp::log($key);
+			$type = $key;
+			$newObject = NULL;
+			
+			switch ($key) {
+				case 'user':
+					ChromePhp::log("yaaay");
+					$newObject = new user();
+					break;
+				case 'article':
+					$newObject = new article();
+					break;
+				case 'source':
+					$newObject = new source();
+					break;
+				case 'vote':
+					$newObject = new vote();
+					break;
+				case 'tag':
+					$newObject = new tag();
+					break; 
+				case 'comment':
+					$newObject = new comment();
+					break;
+				default:
+					return NULL;
+			}
+			$instanceReflect = new ReflectionClass($newObject);
+			//set properties
+			$value = $jsonData[$key];
+			foreach(array_keys($value) as $key)
+			{
+				//ChromePhp::log("prop " . $key);
+				//ChromePhp::log("value " . $value[$key] );
+				
+				if (property_exists($newObject, $key))
+				{
+					$prop = $instanceReflect->getProperty($key);
+					
+		            $prop->setValue($newObject ,$value[$key]);
+		             
+				}
+				else {
+					//ChromePhp::log("Could not find key " . $key );
+				}
+			}
+			
+			
+			
+			$createdItem = model::global_instance()->createData($newObject);
+			            
+		}
+	}
+	
+    public function setData($json)
     {
         $jsonData = json_decode($json,true);
         $keys = array_keys($jsonData);
@@ -70,45 +134,6 @@ class dataAccess
 			//ChromePhp::log($realItem);
 			$this->mergeData($jsonData, $realItem);            
         }
-    }
-    
-    function JSONSetVote($obj)
-    {
-        
-    }
-    
-    function JSONSetComment($obj)
-    {
-        
-    }
-    
-    function JSONSetUser($obj)
-    {
-        
-        if(array_key_exists($obj->id, model::global_instance()->$users))
-        {
-            
-            $existingItem = model::global_instance()->$users[$obj->id ];
-            $this->mergeData($obj, $existingItem);
-        }
-        else {
-            //add new
-        }
-    }
-    
-    function JSONSetTag($obj)
-    {
-        
-    }
-    
-    function JSONSetArticle($obj)
-    {
-        
-    }
-    
-    function JSONSetSource($obj)
-    {
-        
     }
     
     static function startsWith($haystack, $needle)

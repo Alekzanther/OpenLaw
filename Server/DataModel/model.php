@@ -65,6 +65,7 @@ class model
         $this->linkArticleComment();
         $this->linkArticleSource();
 		
+		
 		//ChromePhp::log($this->items["source"]);
      }
  
@@ -346,5 +347,63 @@ class model
 		//ChromePhp::log("changed value to " . $prop->getValue($modelObj));
 		//ChromePhp::log($modelObj);
     }
+	
+	
+	public function getNextID($type) {
+		//should be cached
+		ChromePhp::log($type);
+		$highestID = 1;
+		
+		foreach ($this->items[$type] as $item) {
+			
+			if ($highestID  <= intval($item->id)){
+				$highestID = intval($item->id) + 1;
+			}
+		}
+		return $highestID;
+	}
+		
+	public function createData($object) {
+		
+		$link = databaseConnection::getConnection();
+		
+		$type = get_class($object);
+		
+		ChromePhp::log($object);
+		$id = $this->getNextID($type);
+		ChromePhp::log($id);
+		
+		$instanceReflect = new ReflectionClass($object);
+        $instanceProps = $instanceReflect->getProperties();
+		
+		$propString = "id";
+		$valueString = "" . $id . "";
+		ChromePhp::log("tjopp");
+		ChromePhp::log($instanceProps);
+		
+		$values = array();
+		foreach ($instanceProps as $prop) {
+			if ($prop->getName() != 'id' && !is_array($prop->getValue($object)) && $prop->getValue($object) != null)
+			{
+				ChromePhp::log($prop->getName());
+				
+				$valueString = $valueString . ", '" . $prop->getValue($object) . "'";
+				
+				$propString = $propString . ", " . $prop->getName();
+			}
+		}
+		
+		
+		//UPDATE `article` SET `id`=[value-1],`create_date`=[value-2],`name`=[value-3],`value`=[value-4] WHERE 1
+		$sql = 'INSERT INTO ' . $type . " (" . $propString . ") VALUES(" . $valueString . ")";
+		
+		//$sanitizedSQL = mysqli_real_escape_string($link, $sql);
+		$result = mysqli_query($link, $sql);
+		if ( false===$result ) {
+		  ChromePhp::log("error: " . mysqli_error($link));
+		}
+		ChromePhp::log("insert sql > " . $sql);		
+
+	}
 }
 ?>

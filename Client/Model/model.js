@@ -49,7 +49,33 @@ var model = {
 			//$( ".result" ).html( data );
 		});
 	},
+	create : function(param) {
+		//alert(param.name);
+		var cache = [];
+		console.log("hej");
+		model.SaveObject = "{\"" + param.constructor.name + "\":" + JSON.stringify(param, function(key, value) {
+		    if (typeof value === 'object' && value !== null) {
+		        if (cache.indexOf(value) !== -1) {
+		            // Circular reference found, discard key
+		            //console.log(value);
+		            return;
+		        }
 
+		        
+		        cache.push(value);
+		    }
+		    
+		    return value;
+		});
+		model.SaveObject += "}";
+		console.log(model.SaveObject);
+		cache = null; // Enable garbage collection
+		//	console.log("http://localhost/OpenLaw/Server/DataAccess/setData.php?type=user?data=" + model.SaveObject);
+		$.post( "http://localhost/OpenLaw/Server/DataAccess/createData.php", { data : model.SaveObject }, function( data ) {
+			console.log("wow...");
+			//$( ".result" ).html( data );
+		});
+	},
 	getRealData : function() {
 
 		this.test = "data";
