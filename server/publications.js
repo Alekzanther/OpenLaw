@@ -1,5 +1,15 @@
-Meteor.publish('articles', function() {
-  return Articles.find();
+Meteor.publish('articles', function(options) {
+  
+  check(options, {
+    sort: Object,
+    limit: Number
+  });
+  return Articles.find({}, options);
+});
+
+Meteor.publish('singleArticle', function(id) {
+  check(id, String)
+  return Articles.find(id);
 });
 
 Meteor.publish('comments', function(articleId) {

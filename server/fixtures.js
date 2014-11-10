@@ -18,7 +18,9 @@ if (Articles.find().count() === 0) {
     author: simon.profile.name,
     url: 'http://www.dinlag.se/',
     submitted: new Date(now - 7 * 3600 * 1000),
-    commentsCount: 2
+    commentsCount: 2,
+    upvoters: [], 
+    votes: 0
   });
 
   Comments.insert({
@@ -44,7 +46,9 @@ if (Articles.find().count() === 0) {
     author: alex.profile.name,
     url: 'http://www.reddit.com/r/sweden',
     submitted: new Date(now - 10 * 3600 * 1000),
-    commentsCount: 0
+    commentsCount: 0,
+    upvoters: [], 
+    votes: 0
   });
 
   Articles.insert({
@@ -53,6 +57,21 @@ if (Articles.find().count() === 0) {
     author: simon.profile.name,
     url: 'https://www.youtube.com/watch?v=8ATu1BiOPZA',
     submitted: new Date(now - 12 * 3600 * 1000),
-    commentsCount: 0
+    commentsCount: 0,
+    upvoters: [], 
+    votes: 0
   });
+  
+  for (var i = 0; i < 10; i++) {
+    Articles.insert({
+      title: 'Test article #' + i,
+      author: simon.profile.name,
+      userId: simon._id,
+      url: 'http://google.com/?q=test-' + i,
+      submitted: new Date(now - i * 3600 * 1000 + 1),
+      commentsCount: 0,
+      upvoters: [], 
+      votes: 0
+    });
+  }
 }
