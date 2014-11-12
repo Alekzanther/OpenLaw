@@ -1,7 +1,13 @@
 <template name="articleItem">
   <div class="article">
-    <a href="#" class="upvote btn btn-default {{upvotedClass}}">^</a>
-    <a href="#" class="downvote btn btn-default {{downvotedClass}}">v</a>
+    <div style="float:left">
+      <div>
+        <a href="#" class="upvote btn btn-default {{upvotedClass}}">^</a>
+      </div>
+      <div>
+        <a href="#" class="downvote btn btn-default {{downvotedClass}}">v</a>
+      </div>
+    </div>
     <div class="article-content">
       <h3><a href="{{url}}">{{title}}</a><span>{{domain}}</span></h3> 
       <p>{{pluralize upvotes "uppröst" "uppröster"}}, {{pluralize downvotes "nedröst" "nedröster"}}, Submitted by {{author}}, {{formatDate submitted "YYYY-MM-DD"}}

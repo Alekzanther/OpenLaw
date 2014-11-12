@@ -52,12 +52,13 @@ body {
     -moz-transition: all 300ms 0ms ease-in;
     -o-transition: all 300ms 0ms ease-in;
     transition: all 300ms 0ms ease-in; }
-  .article .upvote {
+  .article .upvote .downvote {
     display: block;
     margin: 7px 12px 0 0;
     float: left; }
   .article .article-content {
-    float: left; }
+    margin-left: 50px;
+    float: relative; }
     .article .article-content h3 {
       margin: 0;
       line-height: 1.4;
