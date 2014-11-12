@@ -1,7 +1,9 @@
 Template.articleItem.helpers({
+  
   ownPost: function() {    
     return this.userId === Meteor.userId();  
   },
+  
   author: function() {
     return this.author;
   },
@@ -10,9 +12,11 @@ Template.articleItem.helpers({
     a.href = this.url;
     return a.hostname;
   },
+  
   commentsCount: function() {
     return this.commentsCount;
   },
+  
   upvotedClass: function() {
     var userId = Meteor.userId();
     if (userId && !_.include(this.upvoters, userId)) {
@@ -21,6 +25,7 @@ Template.articleItem.helpers({
       return 'disabled';
     }
   },
+  
   downvotedClass: function() {
     var userId = Meteor.userId();
     if (userId && !_.include(this.downvoters, userId)) {
@@ -29,15 +34,19 @@ Template.articleItem.helpers({
       return 'disabled';
     }
   }
+  
 });
 
 Template.articleItem.events({
+  
   'click .upvotable': function(e) {
     e.preventDefault();
     Meteor.call('upvote', this._id);
   },
+  
   'click .downvotable': function(e) {
     e.preventDefault();
     Meteor.call('downvote', this._id);
   }
+  
 });
