@@ -20,6 +20,14 @@ Template.articleItem.helpers({
     } else {
       return 'disabled';
     }
+  },
+  downvotedClass: function() {
+    var userId = Meteor.userId();
+    if (userId && !_.include(this.downvoters, userId)) {
+      return 'btn-primary downvotable';
+    } else {
+      return 'disabled';
+    }
   }
 });
 
@@ -27,5 +35,9 @@ Template.articleItem.events({
   'click .upvotable': function(e) {
     e.preventDefault();
     Meteor.call('upvote', this._id);
+  },
+  'click .downvotable': function(e) {
+    e.preventDefault();
+    Meteor.call('downvote', this._id);
   }
 });

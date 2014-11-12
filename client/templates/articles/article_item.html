@@ -1,9 +1,10 @@
 <template name="articleItem">
   <div class="article">
     <a href="#" class="upvote btn btn-default {{upvotedClass}}">^</a>
+    <a href="#" class="downvote btn btn-default {{downvotedClass}}">v</a>
     <div class="article-content">
       <h3><a href="{{url}}">{{title}}</a><span>{{domain}}</span></h3> 
-      <p>{{pluralize votes "röst" "röster"}}, Submitted by {{author}}, {{formatDate submitted "YYYY-MM-DD"}}
+      <p>{{pluralize upvotes "uppröst" "uppröster"}}, {{pluralize downvotes "nedröst" "nedröster"}}, Submitted by {{author}}, {{formatDate submitted "YYYY-MM-DD"}}
         <a href="{{pathFor 'articlePage'}}">{{pluralize commentsCount "kommentar" "kommentarer"}}</a>
         {{#if ownPost}}<a href="{{pathFor 'articleEdit'}}">Edit</a>{{/if}}      
       </p>

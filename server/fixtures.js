@@ -20,7 +20,9 @@ if (Articles.find().count() === 0) {
     submitted: new Date(now - 7 * 3600 * 1000),
     commentsCount: 2,
     upvoters: [], 
-    votes: 0
+    upvotes: 0,
+    downvoters: [], 
+    downvotes: 0
   });
 
   Comments.insert({
@@ -48,7 +50,9 @@ if (Articles.find().count() === 0) {
     submitted: new Date(now - 10 * 3600 * 1000),
     commentsCount: 0,
     upvoters: [], 
-    votes: 0
+    upvotes: 0,
+    downvoters: [], 
+    downvotes: 0
   });
 
   Articles.insert({
@@ -59,7 +63,9 @@ if (Articles.find().count() === 0) {
     submitted: new Date(now - 12 * 3600 * 1000),
     commentsCount: 0,
     upvoters: [], 
-    votes: 0
+    upvotes: 0,
+    downvoters: [], 
+    downvotes: 0
   });
   
   for (var i = 0; i < 10; i++) {
@@ -71,7 +77,9 @@ if (Articles.find().count() === 0) {
       submitted: new Date(now - i * 3600 * 1000 + 1),
       commentsCount: 0,
       upvoters: [], 
-      votes: 0
+      upvotes: 0,
+      downvoters: [], 
+      downvotes: 0
     });
   }
 }
