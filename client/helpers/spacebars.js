@@ -6,3 +6,7 @@ UI.registerHelper('pluralize', function(n, singular, plural) {
     return n + ' ' + plural;
   }
 });
+
+UI.registerHelper("formatDate", function(timestamp, formatString) {
+    return moment(timestamp).format(formatString);
+});
