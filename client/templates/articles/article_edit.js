@@ -25,7 +25,7 @@ Template.articleEdit.events({
     if (confirm("Are you sure you want to remove this article?")) {
       var currentArticleId = this._id;
       Articles.remove(currentArticleId);
-      Router.go('articlesList');
+      Router.go('home');
     }
   }
 });

@@ -8,10 +8,16 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{pathFor 'articlesList'}}">OpenLaw</a>
+        <a class="navbar-brand" href="{{pathFor 'home'}}">OpenLaw</a>
       </div>
       <div class="collapse navbar-collapse" id="navigation">
-        <ul class="nav navbar-nav">          
+        <ul class="nav navbar-nav">  
+          <li class="{{activeRouteClass 'home' 'newArticles'}}">
+            <a href="{{pathFor 'newArticles'}}">New</a>
+          </li>
+          <li class="{{activeRouteClass  'bestArticles'}}">
+            <a href="{{pathFor 'bestArticles'}}">Best</a>
+          </li>
           {{#if currentUser}}
             <li>
               <a href="{{pathFor 'articleSubmit'}}">Submit</a>
