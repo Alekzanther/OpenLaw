@@ -22,18 +22,22 @@ Template.articleItem.helpers({
     var userId = Meteor.userId();
     if (userId && !_.include(this.upvoters, userId)) {
       return 'btn-primary upvotable';
+    } else if (userId) {
+      return 'unvotable';
     } else {
-      return 'disabled';
-    }
+      return 'disabled';   
+    } 
   },
   
   downvotedClass: function() {
     var userId = Meteor.userId();
     if (userId && !_.include(this.downvoters, userId)) {
       return 'btn-primary downvotable';
+    } else if (userId) {
+      return 'unvotable';
     } else {
-      return 'disabled';
-    }
+      return 'disabled';   
+    } 
   }
   
 });
@@ -48,6 +52,11 @@ Template.articleItem.events({
   'click .downvotable': function(e) {
     e.preventDefault();
     Meteor.call('downvote', this._id);
+  },
+
+  'click .unvotable': function(e) {
+    e.preventDefault();
+    Meteor.call('unvote', this._id);
   }
   
 });

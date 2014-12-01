@@ -19,9 +19,9 @@ if (Articles.find().count() === 0) {
     url: 'http://www.dinlag.se/',
     submitted: new Date(now - 7 * 3600 * 1000),
     commentsCount: 2,
-    upvoters: [], 
+    upvoters: [],
     upvotes: 0,
-    downvoters: [], 
+    downvoters: [],
     downvotes: 0
   });
 
@@ -31,7 +31,7 @@ if (Articles.find().count() === 0) {
     author: alex.profile.name,
     submitted: new Date(now - 5 * 3600 * 1000),
     body: 'Vilken fin sida...'
-    
+
   });
 
   Comments.insert({
@@ -49,9 +49,9 @@ if (Articles.find().count() === 0) {
     url: 'http://www.reddit.com/r/sweden',
     submitted: new Date(now - 10 * 3600 * 1000),
     commentsCount: 0,
-    upvoters: [], 
+    upvoters: [],
     upvotes: 0,
-    downvoters: [], 
+    downvoters: [],
     downvotes: 0
   });
 
@@ -62,12 +62,12 @@ if (Articles.find().count() === 0) {
     url: 'https://www.youtube.com/watch?v=8ATu1BiOPZA',
     submitted: new Date(now - 12 * 3600 * 1000),
     commentsCount: 0,
-    upvoters: [], 
+    upvoters: [],
     upvotes: 0,
-    downvoters: [], 
+    downvoters: [],
     downvotes: 0
   });
-  
+
   for (var i = 0; i < 10; i++) {
     Articles.insert({
       title: 'Test article #' + i,
@@ -76,9 +76,9 @@ if (Articles.find().count() === 0) {
       url: 'http://google.com/?q=test-' + i,
       submitted: new Date(now - i * 3600 * 1000 + 1),
       commentsCount: 0,
-      upvoters: [], 
+      upvoters: [],
       upvotes: 0,
-      downvoters: [], 
+      downvoters: [],
       downvotes: 0
     });
   }
