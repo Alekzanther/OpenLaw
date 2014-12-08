@@ -13,4 +13,6 @@ accounts-password
 mrt:moment
 houston:admin
 http
+msavin:mongoinspector
+djedi:sanitize-html
 
