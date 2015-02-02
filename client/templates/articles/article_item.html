@@ -9,10 +9,10 @@
       </div>
     </div>
     <div class="article-content">
-      <h3><a href="{{url}}">{{title}}</a><span>{{domain}}</span></h3> 
+      <h3><a href="{{pathFor 'articlePage'}}">{{title}}</a><span>{{domain}}</span></h3> 
       <p>{{pluralize upvotes "uppröst" "uppröster"}}, {{pluralize downvotes "nedröst" "nedröster"}}, Submitted by {{author}}, {{formatDate submitted "YYYY-MM-DD"}}
         <a href="{{pathFor 'articlePage'}}">{{pluralize commentsCount "kommentar" "kommentarer"}}</a>
-        {{#if ownPost}}<a href="{{pathFor 'articleEdit'}}">Edit</a>{{/if}}      
+        {{#if ownPost}}<a href="{{pathFor 'articleEdit'}}">Edit</a>{{/if}}
       </p>
     </div>
     <a href="{{pathFor 'articlePage'}}" class="discuss btn btn-default">Discuss</a>

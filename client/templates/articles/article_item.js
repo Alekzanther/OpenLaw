@@ -1,23 +1,23 @@
 Template.articleItem.helpers({
-  
-  ownPost: function() {    
-    return this.userId === Meteor.userId();  
+
+  ownPost: function() {
+    return this.userId === Meteor.userId();
   },
-  
+
   author: function() {
     return this.author;
   },
-  
+
   domain: function() {
     var a = document.createElement('a');
     a.href = this.url;
     return a.hostname;
   },
-  
+
   commentsCount: function() {
     return this.commentsCount;
   },
-  
+
   upvotedClass: function() {
     var userId = Meteor.userId();
     if (userId && !_.include(this.upvoters, userId)) {
@@ -25,10 +25,10 @@ Template.articleItem.helpers({
     } else if (userId) {
       return 'unvotable';
     } else {
-      return 'disabled';   
-    } 
+      return 'disabled';
+    }
   },
-  
+
   downvotedClass: function() {
     var userId = Meteor.userId();
     if (userId && !_.include(this.downvoters, userId)) {
@@ -36,19 +36,19 @@ Template.articleItem.helpers({
     } else if (userId) {
       return 'unvotable';
     } else {
-      return 'disabled';   
-    } 
+      return 'disabled';
+    }
   }
-  
+
 });
 
 Template.articleItem.events({
-  
+
   'click .upvotable': function(e) {
     e.preventDefault();
     Meteor.call('upvote', this._id);
   },
-  
+
   'click .downvotable': function(e) {
     e.preventDefault();
     Meteor.call('downvote', this._id);
@@ -58,5 +58,5 @@ Template.articleItem.events({
     e.preventDefault();
     Meteor.call('unvote', this._id);
   }
-  
+
 });

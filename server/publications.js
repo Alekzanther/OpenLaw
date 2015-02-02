@@ -1,8 +1,8 @@
 Meteor.publish('articles', function(options) {
-  check(options, {
+  /*check(options, {
     sort: Object,
     limit: Number
-  });
+  });*/
   return Articles.find({}, options);
 });
 
