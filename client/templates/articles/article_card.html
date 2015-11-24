@@ -1,0 +1,25 @@
+<template name="article_card">
+  <div class="col s12 m6 l6 unselectable">
+  <div class="card {{classes}}">
+    <div class="card-content">
+      <span>
+          <span class="card-title black-text">{{title}}</span>
+          <br/>
+          <span class="notification-date" >{{formatDate TimeStamp "YYYY-MM-DD HH:mm"}}</span>
+          {{#if hasComments}}
+            <span class="badge right">
+              <span class="commentCounter">{{commentsCount}}</span> <i class="mdi-communication-textsms commentCounter"></i>
+            </span>
+          {{/if}}
+
+      </span>
+    </div>
+
+    <div class="card-action notification-summary">
+        {{Summary}}
+    </div>
+
+
+    </div>
+  </div>
+</template>
