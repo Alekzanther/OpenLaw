@@ -1,10 +1,19 @@
 <template name="home">
   <div class="row home">
-    <h1>Welcome, brothers and sisters.</h1>
-    {{#each Articles}}
-      <h2>Check out this cool article: <a href="/article/{{_id}}">{{title}}</a></h2>
-      <br/>
-    {{/each}}
 
-  </div>
+
+       <div class="col s12 section">
+           <h1>Din Lag</h1>
+       </div>
+       <div class="col s4">
+           {{> article_list name="Popular" type="yobroski"}}
+       </div>
+       <div class="col s4">
+           {{> article_list name="Controversial" type="yobroski"}}
+       </div>
+       <div class="col s4">
+           {{> article_list name="Hated" type="yobroski"}}
+       </div>
+
+   </div>
 </template>

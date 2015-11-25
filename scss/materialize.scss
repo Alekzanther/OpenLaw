@@ -23,6 +23,9 @@ $openLawColor: #001b3c;
 .dropdown-content li > a, .dropdown-content li > span {
   color: $openLawColor;
 }
+.card.card-action a {
+    color: #00416b;
+}
 
 .hidden {
   display: none;
