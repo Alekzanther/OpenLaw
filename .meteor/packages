@@ -20,3 +20,6 @@ kadira:flow-router
 meteorhacks:flow-layout
 mrt:moment
 materialize:materialize
+accounts-base
+accounts-password
+planettraining:material-design-icons-font

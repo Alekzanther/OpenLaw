@@ -7,3 +7,8 @@ Meteor.publish('article', function(id) {
 		_id: id
 	});
 });
+
+Meteor.publish("votes", function(argument){
+	return Votes.find({
+	});
+});
