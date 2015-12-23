@@ -1,8 +1,8 @@
 <template name="article_page">
     {{#with Article}}
         <div class="row home">
-            <button class="btn-floating btn-large waves-effect waves-light green upvote"><i class="material-icons">thumb_up</i></button>
-            <button class="btn-floating btn-large waves-effect waves-light red downvote"><i class="material-icons">thumb_down</i></button>
+            <button class="btn-floating btn-large waves-effect waves-light  upvote {{upvoted}}"><i class="material-icons">thumb_up</i></button>
+            <button class="btn-floating btn-large waves-effect waves-light  downvote {{downvoted}}"><i class="material-icons">thumb_down</i></button>
             <h1>{{title}}</h1>
             <h2>{{voteScore}}</h2>
         </div>
